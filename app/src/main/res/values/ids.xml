@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="to" type="id">To</item>
+    <item name="from" type="id">From</item>
+    <item name="pie_chart" type="id">Pie Chart</item>
+    <item name="report_lv" type="id">report</item>
+</resources>

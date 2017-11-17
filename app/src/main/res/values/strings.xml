@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Calendar Analyzer</string>
+    <string name="welcomeText">Welcome To Calendar Analyzer</string>
+    <string name="loginButton">Log In</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="select_interval">Select Interval</string>
+    <string name="generate_report">Generate Report</string>
+    <string name="title_activity_view_graph">ViewGraphActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="pie_chart">Pie Chart</string>
+    <string name="events_table">Events Table</string>
+    <string name="no_events_for_this_month">no events were found on your account for this month...</string>
+</resources>

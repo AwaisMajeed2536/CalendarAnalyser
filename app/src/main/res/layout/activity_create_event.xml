@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+
+        <EditText
+            android:id="@+id/eventTitle_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Event Title" />
+
+        <EditText
+            android:id="@+id/description_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/eventTitle_et"
+            android:layout_marginTop="10dp"
+            android:hint="Description" />
+
+        <TextView
+            android:id="@+id/startDate_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/description_et"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_field"
+            android:hint="Start Date/Time"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+
+
+
+        <TextView
+            android:id="@+id/endDate_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/startDate_tv"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_field"
+            android:hint="End Date/Time"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+
+        <Button
+            android:id="@+id/create_event_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/endDate_tv"
+            android:layout_marginTop="10dp"
+            android:text="Create Event" />
+
+    </RelativeLayout>
+</ScrollView>

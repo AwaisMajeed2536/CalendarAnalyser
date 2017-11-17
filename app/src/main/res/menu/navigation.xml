@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pie_chart"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/pie_chart" />
+
+    <item
+        android:id="@+id/column_chart"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/events_table" />
+
+    <item
+        android:id="@+id/textual_report"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/title_notifications" />
+
+</menu>
