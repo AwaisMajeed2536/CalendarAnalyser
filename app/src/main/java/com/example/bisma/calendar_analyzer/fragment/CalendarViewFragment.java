@@ -69,6 +69,7 @@ public class CalendarViewFragment extends Fragment implements AdapterView.OnItem
         monthNameTv = rootView.findViewById(R.id.month_tv);
         yearNameTv = rootView.findViewById(R.id.year_tv);
         eventsList = TasksSource.newInstance().getAll();
+        setData();
     }
 
     private void setData(){

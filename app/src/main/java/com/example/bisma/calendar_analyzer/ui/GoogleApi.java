@@ -69,7 +69,7 @@ public class GoogleApi extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_google_api);
-        if (getIntent().getExtras().getString(Constants.GOOGLE_API_STARTDATE_PASS_KEY) != null) {
+        if (getIntent().getExtras()!= null) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
                 Date dt = sdf.parse(getIntent().getExtras().getString(Constants.GOOGLE_API_STARTDATE_PASS_KEY));
