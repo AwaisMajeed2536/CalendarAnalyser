@@ -45,9 +45,6 @@ public class TodaysTasksActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todays_tasks);
         initView();
-        dataList = TasksSource.newInstance().getAll();
-        adapter = new TodaysTasksAdapter(this, dataList);
-        todaysTasksLv.setAdapter(adapter);
     }
 
     @Override
@@ -60,7 +57,6 @@ public class TodaysTasksActivity extends AppCompatActivity implements View.OnCli
 
             }
         }
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -80,9 +76,12 @@ public class TodaysTasksActivity extends AppCompatActivity implements View.OnCli
     private void initView() {
         todaysTasksLv = findViewById(R.id.todays_tasks_lv);
         todaysTasksLv.setOnItemClickListener(this);
-        getTodaysTasks();
         addTaskBtn = findViewById(R.id.add_task);
         addTaskBtn.setOnClickListener(TodaysTasksActivity.this);
+        adapter = new TodaysTasksAdapter(this, dataList);
+        todaysTasksLv.setAdapter(adapter);
+        dataList = TasksSource.newInstance().getAll();
+        getTodaysTasks();
     }
 
     public void getTodaysTasks() {
@@ -93,11 +92,8 @@ public class TodaysTasksActivity extends AppCompatActivity implements View.OnCli
                 String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH)) + " 00:00:01";
 
         dataList = TasksSource.newInstance().getByDate(fromDateString);
-        for (EventModelDep obj : dataList) {
-            setAlarm(UtilHelpers.getDateInFormat(obj.getStartDate()), new RemindersModel(UtilHelpers.getIdFromDate(obj.getStartDate()), obj.getEventTitle(),
-                    obj.getDescription(), obj.getStartDate(), obj.getEndDate()));
-        }
-        adapter.notifyDataSetChanged();
+        adapter = new TodaysTasksAdapter(this, dataList);
+        todaysTasksLv.setAdapter(adapter);
     }
 
     private void setAlarm(Calendar calendar, RemindersModel model) {
@@ -124,7 +120,7 @@ public class TodaysTasksActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         EventModelDep clickedEvent = (EventModelDep) parent.getAdapter().getItem(position);
-        if (!clickedEvent.getEventTitle().equalsIgnoreCase("")){
+        if (!clickedEvent.getEventTitle().equalsIgnoreCase("")) {
             RemindersModel model = new RemindersModel(0, clickedEvent.getEventTitle(), clickedEvent.getDescription(),
                     clickedEvent.getStartDate(), clickedEvent.getEndDate());
             Intent intent = new Intent(this, NotificationHandlerActivity.class);

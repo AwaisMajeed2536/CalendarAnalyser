@@ -63,17 +63,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         startActivityForResult(new Intent(this, GoogleApi.class), Constants.GOOGLE_API_GET_CALL_KEY);
@@ -144,25 +144,19 @@ public class MainActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    CalendarView tab1 = new CalendarView();
-                    return tab1;
+                    return new CalendarView();
                 case 1:
-                    Analyzer tab2 = new Analyzer();
-                    return tab2;
+                    return new Analyzer();
                 case 2:
-                    History tab3 = new History();
-                    return tab3;
-                case 3:
-                    History tab4 = new History();
-                    return tab4;
+                    return new History();
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 4;
+            // Show 4 total pages.
+            return 3;
         }
 
         @Override
@@ -174,8 +168,6 @@ public class MainActivity extends AppCompatActivity {
                     return "Analyzer";
                 case 2:
                     return "Reports";
-                case 3:
-                    return "Today";
             }
             return null;
         }
