@@ -34,8 +34,6 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     private MenuItem mSearchAction;
-    private boolean isSearchOpened = false;
-    private EditText editSearch;
 
 
     public boolean onPrepareOptions(Menu menu) {
@@ -124,10 +122,6 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void doSearch() {
-    }
-
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -140,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
                     return new CalendarView();
@@ -149,13 +141,14 @@ public class MainActivity extends AppCompatActivity {
                     return new Analyzer();
                 case 2:
                     return new History();
+                default:
+                    return new CalendarView();
             }
-            return null;
         }
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
+            // Show 3 total pages.
             return 3;
         }
 
@@ -180,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == Constants.GOOGLE_API_GET_CALL_KEY) {
             if (resultCode == Activity.RESULT_OK) {
                 ArrayList<EventModelDep> taskList = data.getParcelableArrayListExtra(Constants.GOOGLE_API_RESULT_KEY);
-                if(taskList ==null || taskList.size() == 0){
+                if (taskList == null || taskList.size() == 0) {
                     UtilHelpers.showAlertDialog(this, "No Events", getString(R.string.no_events_for_this_month));
                 } else {
                     TasksSource.newInstance().insertOrUpdate(taskList);
