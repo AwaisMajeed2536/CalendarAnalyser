@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16sp"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -20,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="40sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/year_tv"
@@ -29,13 +30,13 @@
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/month_tv"
             android:textColor="@color/black"
-            android:textSize="40sp" />
+            android:textSize="24sp" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         android:weightSum="7">
 

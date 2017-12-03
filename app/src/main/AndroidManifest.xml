@@ -17,16 +17,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.LoginActivity"
-            android:label="Login Activity">
-
-        </activity>
+            android:label="Login Activity"></activity>
         <activity android:name=".ui.GoogleApi" />
         <activity android:name=".ui.CreateEventActivity" />
         <activity android:name=".ui.ManipulateTasksActivity" />
-        <activity android:name=".ui.NotificationHandlerActivity">
-        </activity>
-        <activity
-            android:name=".ui.ViewGraphActivity"/>
+        <activity android:name=".ui.NotificationHandlerActivity"></activity>
+        <activity android:name=".ui.ViewGraphActivity" />
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -35,17 +31,21 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ui.ReportsHistoryActivity" />
-        <activity android:name=".ui.TodaysTasksActivity"/>
+        <activity android:name=".ui.TodaysTasksActivity" />
         <activity android:name=".ui.CreateLocalEventActivity" />
 
-        <receiver android:name=".helpers.notifications.AlarmReceiver" android:process=":remote"/>
+        <receiver
+            android:name=".helpers.notifications.AlarmReceiver"
+            android:process=":remote" />
+
+        <activity android:name=".ui.ScheduleBarChartActivity"></activity>
     </application>
 
 </manifest>

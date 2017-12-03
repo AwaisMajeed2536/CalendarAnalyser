@@ -68,7 +68,7 @@ public class TodaysTasksActivity extends AppCompatActivity implements View.OnCli
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_view_report) {
-            //Todo generate graph activity and call here
+            startActivity(new Intent(this, ScheduleBarChartActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -113,7 +113,7 @@ public class TodaysTasksActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.add_task) {
-            startActivity(new Intent(this, CreateLocalEventActivity.class));
+            startActivity(new Intent(this, CreateEventActivity.class));
         }
     }
 
