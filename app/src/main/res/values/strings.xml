@@ -15,4 +15,8 @@
     <string name="pie_chart">Pie Chart</string>
     <string name="events_table">Events Table</string>
     <string name="no_events_for_this_month">no events were found on your account for this month...</string>
+    <string name="btm_nav_title_cal">Calendar</string>
+    <string name="btm_nav_title_analyzer">Analyzer</string>
+    <string name="btm_nav_title_reports">Reports</string>
+    <string name="btm_nav_title_today">Today</string>
 </resources>
