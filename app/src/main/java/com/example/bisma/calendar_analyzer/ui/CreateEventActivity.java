@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bisma.calendar_analyzer.R;
+import com.example.bisma.calendar_analyzer.db.source.TasksSource;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 import com.example.bisma.calendar_analyzer.interfaces.DatePickerCallback;
@@ -49,6 +50,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             event.setDescription(descriptionEt.getText().toString());
             event.setStartDate(UtilHelpers.getDateInFormat(startDateToPass, false));
             event.setEndDate(UtilHelpers.getDateInFormat(endDateToPass, false));
+            event.setScheduled(0);
+            TasksSource.newInstance().insertOrUpdate(event);
             Intent intent = new Intent(this, GoogleApi.class);
             if (getIntent().getExtras() == null) {
                 intent.putExtra(Constants.GOOGLE_API_CALL_TYPE_KEY, 2);
@@ -82,13 +85,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
-        eventTitleEt = (EditText) findViewById(R.id.eventTitle_et);
-        descriptionEt = (EditText) findViewById(R.id.description_et);
-        startDateTv = (TextView) findViewById(R.id.startDate_tv);
+        eventTitleEt = findViewById(R.id.eventTitle_et);
+        descriptionEt = findViewById(R.id.description_et);
+        startDateTv = findViewById(R.id.startDate_tv);
         startDateTv.setOnClickListener(this);
-        endDateTv = (TextView) findViewById(R.id.endDate_tv);
+        endDateTv = findViewById(R.id.endDate_tv);
         endDateTv.setOnClickListener(this);
-        createEventBtn = (Button) findViewById(R.id.create_event_btn);
+        createEventBtn = findViewById(R.id.create_event_btn);
         createEventBtn.setOnClickListener(CreateEventActivity.this);
         loadEditView();
     }

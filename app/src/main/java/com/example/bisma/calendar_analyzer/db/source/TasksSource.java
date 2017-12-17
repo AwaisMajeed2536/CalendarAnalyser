@@ -27,7 +27,7 @@ public class TasksSource extends BaseDataSource<EventModelDep> {
     public TasksSource() {
     }
 
-    public static TasksSource newInstance(){
+    public static TasksSource newInstance() {
         return new TasksSource();
     }
 
@@ -38,7 +38,7 @@ public class TasksSource extends BaseDataSource<EventModelDep> {
         values.put(DESCRIPTION, model.getDescription());
         values.put(START_DATE_TIME, model.getStartDate());
         values.put(END_DATE_TIME, model.getEndDate());
-        values.put(IS_SCHEDULED,model.isScheduled());
+        values.put(IS_SCHEDULED, model.isScheduled());
     }
 
     @NonNull
@@ -54,11 +54,11 @@ public class TasksSource extends BaseDataSource<EventModelDep> {
         return model;
     }
 
-    public List<EventModelDep> getByDate(String date){
+    public List<EventModelDep> getByDate(String date) {
         List<EventModelDep> toReturn = new ArrayList<>();
         List<EventModelDep> allTasks = getAll();
         for (EventModelDep obj : allTasks) {
-            if (obj.getStartDate().contains(date)) {
+            if (obj.getStartDate().contains(date.split(" ")[0])) {
                 toReturn.add(obj);
             }
         }

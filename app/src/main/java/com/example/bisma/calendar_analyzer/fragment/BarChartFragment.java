@@ -51,8 +51,8 @@ public class BarChartFragment extends Fragment {
     }
 
     private void initView(View rootView) {
-        barChart = (BarChart) rootView.findViewById(R.id.bar_chart);
-        titlesLv = (ListView) rootView.findViewById(R.id.titles_lv);
+        barChart = rootView.findViewById(R.id.bar_chart);
+        titlesLv = rootView.findViewById(R.id.titles_lv);
         dataList = getArguments().getParcelableArrayList(Constants.BAR_CHART_PASS_KEY);
         BarData barData = new BarData(analyzeData());
         barData.setBarWidth(0.9f); // set custom bar width

@@ -77,7 +77,10 @@ public class TodaysTasksAdapter extends ArrayAdapter<EventModelDep> {
 
         private void setData(EventModelDep obj) {
             String time = obj.getStartDate();
-            timeTv.setText(time);
+            if (time.split(" ").length > 1)
+                timeTv.setText(time.split(" ")[1]);
+            else
+                timeTv.setText(time);
             titleTv.setText(obj.getEventTitle());
         }
     }
@@ -92,10 +95,10 @@ public class TodaysTasksAdapter extends ArrayAdapter<EventModelDep> {
             HashMap<String, Integer> hours = getHours(obj.getStartDate(), obj.getEndDate());
             if (hours.get(FROM_HOUR) == i) {
                 toReturn.add(new EventModelDep(obj.getEventID(), obj.getEventTitle(), obj.getDescription(),
-                        obj.getStartDate().split(" ")[1], obj.getEndDate()));
+                        obj.getStartDate(), obj.getEndDate()));
                 position++;
             } else {
-                toReturn.add(new EventModelDep(i+1, "", "",
+                toReturn.add(new EventModelDep(i + 1, "", "",
                         String.format("%02d", i) + ":00:00", String.format("%02d", i + 1) + ":00:00"));
             }
         }
@@ -104,7 +107,7 @@ public class TodaysTasksAdapter extends ArrayAdapter<EventModelDep> {
 
     private HashMap<String, Integer> getHours(String from, String to) {
         HashMap<String, Integer> toReturn = new HashMap<>();
-        if (from.length() == 0){
+        if (from.length() == 0) {
             toReturn.put(FROM_HOUR, -1);
             toReturn.put(TO_HOUR, -1);
             return toReturn;

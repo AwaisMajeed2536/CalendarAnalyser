@@ -38,14 +38,27 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
         initView();
     }
 
+    boolean isPlaying = true;
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.start_btn) {
             mHandler.sendEmptyMessage(MSG_START_TIMER);
+            startBtn.setEnabled(false);
         } else if (view.getId() == R.id.pause_btn) {
-            mHandler.sendEmptyMessage(MSG_STOP_TIMER);
+            if (isPlaying){
+                pauseBtn.setText("RESUME");
+                mHandler.sendEmptyMessage(MSG_PAUSE_TIMER);
+                isPlaying = false;
+            }else{
+                pauseBtn.setText("PAUSE");
+                mHandler.sendEmptyMessage(MSG_START_TIMER);
+                isPlaying = true;
+            }
         } else if (view.getId() == R.id.stop_btn) {
             mHandler.sendEmptyMessage(MSG_STOP_TIMER);
+            stopBtn.setEnabled(false);
+            startBtn.setEnabled(false);
+            pauseBtn.setEnabled(false);
         }
     }
 
@@ -87,22 +100,11 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
         return (String.format("%02d", hours) + "," + String.format("%02d", mins) + "," + String.format("%02d", secs));
     }
 
-    private void startCountDown() {
-
-    }
-
-    private void stopCountDown() {
-
-    }
-
-    private void endCountDown() {
-
-    }
-
 
     final int MSG_START_TIMER = 0;
     final int MSG_STOP_TIMER = 1;
-    final int MSG_UPDATE_TIMER = 2;
+    final int MSG_PAUSE_TIMER = 2;
+    final int MSG_UPDATE_TIMER = 3;
     int hours, mins, secs;
     final int REFRESH_RATE = 1000;
 
@@ -137,8 +139,15 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
                     hourTv.setText(String.format("%02d", hours));
                     mHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIMER, REFRESH_RATE); //text view is updated every second,
                     break;
+                case MSG_PAUSE_TIMER:
+                    hours = mins = secs = 0;
+                    mHandler.removeMessages(MSG_UPDATE_TIMER); // no more updates.
+                    break;
                 case MSG_STOP_TIMER:
                     hours = mins = secs = 0;
+                    secTv.setText(String.format("%02d", secs));
+                    minTv.setText(String.format("%02d", mins));
+                    hourTv.setText(String.format("%02d", hours));
                     mHandler.removeMessages(MSG_UPDATE_TIMER); // no more updates.
                     break;
 

@@ -67,9 +67,6 @@ public class DatabaseManager {
         DatabaseConnection.closeConnection();
     } // insertOrUpdate
 
-
-
-
     /**
      * Execute raw query on table and return data.
      *
