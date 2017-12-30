@@ -41,7 +41,6 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.create_event_btn) {

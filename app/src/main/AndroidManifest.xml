@@ -24,8 +24,7 @@
         <activity android:name=".ui.NotificationHandlerActivity"></activity>
         <activity android:name=".ui.ViewGraphActivity" />
         <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +37,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ui.ReportsHistoryActivity" />
-        <activity android:name=".ui.TodaysTasksActivity" />
         <activity android:name=".ui.CreateLocalEventActivity" />
 
         <receiver
@@ -46,6 +44,9 @@
             android:process=":remote" />
 
         <activity android:name=".ui.ScheduleBarChartActivity"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="33ed1688bf347aea5884b52dd72e95a9a2b6cf82" />
     </application>
 
 </manifest>

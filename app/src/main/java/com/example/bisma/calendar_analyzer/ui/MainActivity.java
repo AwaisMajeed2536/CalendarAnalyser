@@ -1,36 +1,27 @@
 package com.example.bisma.calendar_analyzer.ui;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.bisma.calendar_analyzer.R;
-import com.example.bisma.calendar_analyzer.adapters.TodaysTasksAdapter;
 import com.example.bisma.calendar_analyzer.db.source.TasksSource;
+import com.example.bisma.calendar_analyzer.fragment.AnalyzerFragment;
+import com.example.bisma.calendar_analyzer.fragment.CalendarViewPagerFragment;
+import com.example.bisma.calendar_analyzer.fragment.HistoryFragment;
+import com.example.bisma.calendar_analyzer.fragment.TodaysTasksFragment;
 import com.example.bisma.calendar_analyzer.helpers.BottomNavigationHelper;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationHelper.OnItemSelectedListener {
 
@@ -38,8 +29,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationH
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationHelper.with(this).setCallBack(this);
         startActivityForResult(new Intent(this, GoogleApi.class), Constants.GOOGLE_API_GET_CALL_KEY);
+        BottomNavigationHelper.with(this).setCallBack(this);
     }
 
 
@@ -51,21 +42,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationH
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        switch (id) {
-            case R.id.action_logout:
-                UtilHelpers.endLoginSession(this);
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-                break;
-            case R.id.action_today_tasks:
-                startActivity(new Intent(this, TodaysTasksActivity.class));
-                break;
+        if (item.getItemId() == R.id.action_logout) {
+            showLogoutDialog();
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showLogoutDialog() {
+        new AlertDialog.Builder(this).setTitle("Sign out")
+                .setMessage("Are you sure you want to sign out?")
+                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        UtilHelpers.endLoginSession(MainActivity.this);
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        }).create().show();
     }
 
     @Override
@@ -78,19 +77,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationH
         Fragment fragment;
         switch (position) {
             case 0:
-                fragment =  new CalendarView();
+                fragment = new CalendarViewPagerFragment();
                 break;
             case 1:
-                fragment =  new Analyzer();
+                fragment = new AnalyzerFragment();
                 break;
             case 2:
-                fragment =  new History();
+                fragment = new HistoryFragment();
                 break;
             case 3:
-                fragment =  new History();
+                fragment = new TodaysTasksFragment();
                 break;
             default:
-                fragment =  new CalendarView();
+                fragment = new CalendarViewPagerFragment();
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
     }
@@ -111,5 +110,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationH
 
             }
         }
+        onSelectItem(0);
     }
 }

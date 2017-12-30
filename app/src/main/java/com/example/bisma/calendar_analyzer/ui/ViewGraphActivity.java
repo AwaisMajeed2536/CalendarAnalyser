@@ -28,7 +28,7 @@ public class ViewGraphActivity extends AppCompatActivity implements BottomNaviga
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_graph);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
         navigation.setSelected(true);
         getDataFromIntents();
@@ -51,6 +51,9 @@ public class ViewGraphActivity extends AppCompatActivity implements BottomNaviga
                 break;
             case R.id.textual_report:
                 selectedFragment = TextualReportFragment.newInstance(reportData);
+                break;
+            case R.id.bar_graph:
+                selectedFragment = new ScheduleBarChartActivity();
                 break;
         }
         if (selectedFragment == null)

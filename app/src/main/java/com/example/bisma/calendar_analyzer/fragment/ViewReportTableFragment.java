@@ -1,4 +1,4 @@
-package com.example.bisma.calendar_analyzer.ui;
+package com.example.bisma.calendar_analyzer.fragment;
 
 
 import android.os.Bundle;
@@ -35,7 +35,7 @@ public class ViewReportTableFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_view_report, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_view_report, container, false);
         initView(rootView);
         return rootView;
     }

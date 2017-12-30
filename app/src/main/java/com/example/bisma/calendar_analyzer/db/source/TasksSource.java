@@ -5,9 +5,11 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.example.bisma.calendar_analyzer.db.source.core.BaseDataSource;
+import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.example.bisma.calendar_analyzer.db.DBConstants.Tasks.TABLE_NAME;
@@ -59,6 +61,20 @@ public class TasksSource extends BaseDataSource<EventModelDep> {
         List<EventModelDep> allTasks = getAll();
         for (EventModelDep obj : allTasks) {
             if (obj.getStartDate().contains(date.split(" ")[0])) {
+                toReturn.add(obj);
+            }
+        }
+        return toReturn;
+    }
+
+    public List<EventModelDep> getInRange(String startDateString, String endDateString) {
+        Calendar startDate = UtilHelpers.getCalendarFromString(startDateString);
+        Calendar endDate = UtilHelpers.getCalendarFromString(endDateString);
+        List<EventModelDep> toReturn = new ArrayList<>();
+        List<EventModelDep> allTasks = getAll();
+        for (EventModelDep obj : allTasks) {
+            Calendar taskDate = UtilHelpers.getCalendarFromString(obj.getStartDate());
+            if (startDate.before(taskDate) && taskDate.before(endDate)) {
                 toReturn.add(obj);
             }
         }

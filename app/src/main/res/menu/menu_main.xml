@@ -4,19 +4,9 @@
     tools:context="com.example.bisma.calendar_analyzer.ui.MainActivity">
 
     <item
-        android:id="@+id/action_today_tasks"
-        android:title="Today's Tasks"
-        app:showAsAction="never"/>
-
-    <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
+        android:icon="@drawable/ic_sign_out"
         android:title="Log Out"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_search"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        android:icon="@drawable/icon_search"
         app:showAsAction="ifRoom" />
 </menu>

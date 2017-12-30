@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/CalendarAnalyser.iml" filepath="$PROJECT_DIR$/CalendarAnalyser.iml" />
       <module fileurl="file://D:\Personal\Calendar_Analyzer\CalendarAnalyser.iml" filepath="D:\Personal\Calendar_Analyzer\CalendarAnalyser.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Calendar_Analyzer.iml" filepath="$PROJECT_DIR$/Calendar_Analyzer.iml" />
       <module fileurl="file://E:\AndroidStudioWorkspace\CalendarAnalyser\Calendar_Analyzer.iml" filepath="E:\AndroidStudioWorkspace\CalendarAnalyser\Calendar_Analyzer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

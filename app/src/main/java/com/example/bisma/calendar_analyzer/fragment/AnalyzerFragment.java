@@ -1,4 +1,4 @@
-package com.example.bisma.calendar_analyzer.ui;
+package com.example.bisma.calendar_analyzer.fragment;
 
 
 import android.app.Activity;
@@ -16,13 +16,15 @@ import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
 import com.example.bisma.calendar_analyzer.models.PieDataModel;
+import com.example.bisma.calendar_analyzer.ui.GoogleApi;
+import com.example.bisma.calendar_analyzer.ui.ViewGraphActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class Analyzer extends Fragment implements View.OnClickListener {
+public class AnalyzerFragment extends Fragment implements View.OnClickListener {
 
     private Button generateReportButton;
     @Override
@@ -30,9 +32,9 @@ public class Analyzer extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // setContentView(R.layout.activity_main);
-        View rootView = inflator.inflate(R.layout.tab2_analyzer, container, false);
+        View rootView = inflator.inflate(R.layout.fragment_analyzer, container, false);
 
-        generateReportButton = (Button) rootView.findViewById(R.id.generate_report_button);
+        generateReportButton = rootView.findViewById(R.id.generate_report_button);
         generateReportButton.setOnClickListener(this);
         return rootView;
     }

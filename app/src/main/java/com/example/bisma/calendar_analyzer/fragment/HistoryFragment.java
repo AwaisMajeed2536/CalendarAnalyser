@@ -1,4 +1,4 @@
-package com.example.bisma.calendar_analyzer.ui;
+package com.example.bisma.calendar_analyzer.fragment;
 
 
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 
-public class History extends Fragment implements View.OnClickListener {
+public class HistoryFragment extends Fragment implements View.OnClickListener {
 
     protected Button analysisReport;
     protected Button employeeReport;
@@ -20,7 +20,7 @@ public class History extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflator.inflate(R.layout.tab3_history, container, false);
+        View rootView = inflator.inflate(R.layout.fragment_history, container, false);
         initView(rootView);
         return rootView;
     }
@@ -35,10 +35,10 @@ public class History extends Fragment implements View.OnClickListener {
     }
 
     private void initView(View rootView) {
-        analysisReport = (Button) rootView.findViewById(R.id.analysisReport);
-        analysisReport.setOnClickListener(History.this);
-        employeeReport = (Button) rootView.findViewById(R.id.employeeReport);
-        employeeReport.setOnClickListener(History.this);
+        analysisReport = rootView.findViewById(R.id.analysisReport);
+        analysisReport.setOnClickListener(HistoryFragment.this);
+        employeeReport = rootView.findViewById(R.id.employeeReport);
+        employeeReport.setOnClickListener(HistoryFragment.this);
         if (UtilHelpers.getUserType(getActivity()) != Constants.USER_TYPE_FACULTY ||
                 UtilHelpers.getUserType(getActivity()) != Constants.USER_TYPE_STUDENT) {
             employeeReport.setVisibility(View.GONE);

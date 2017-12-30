@@ -35,9 +35,9 @@ public class ReportsHistoryActivity extends AppCompatActivity implements AllRepo
     }
 
     private void initView() {
-        reportsLv = (ListView) findViewById(R.id.reports_lv);
+        reportsLv = findViewById(R.id.reports_lv);
         GetAllReportsService.newInstance(this, false, this).callService();
-        imageHolder = (ImageView) findViewById(R.id.image_holder);
+        imageHolder = findViewById(R.id.image_holder);
     }
 
     @Override

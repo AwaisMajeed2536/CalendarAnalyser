@@ -41,4 +41,6 @@ public class Constants {
     public static final String RESULT_FAIL = "You should improve you time management!";
     public static final String REMINDER_ID_PASS_KEY = "REMINDER_ID_PASS_KEY";
     public static final String NOTIFICATION_DATA_PASS_KEY = "notification_data_pass_key";
+    public static final String START_DATE_PASS_KEY = "START_DATE_PASS_KEY";
+    public static final String END_DATE_PASS_KEY = "END_DATE_PASS_KEY";
 }
