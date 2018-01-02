@@ -56,6 +56,18 @@ public class TasksSource extends BaseDataSource<EventModelDep> {
         return model;
     }
 
+    public List<EventModelDep> getTodayEvents() {
+        String date = UtilHelpers.getDateInFormat(Calendar.getInstance(), true);
+        List<EventModelDep> toReturn = new ArrayList<>();
+        List<EventModelDep> allTasks = getAll();
+        for (EventModelDep obj : allTasks) {
+            if (obj.getStartDate().contains(date.split(" ")[0])) {
+                toReturn.add(obj);
+            }
+        }
+        return toReturn;
+    }
+
     public List<EventModelDep> getByDate(String date) {
         List<EventModelDep> toReturn = new ArrayList<>();
         List<EventModelDep> allTasks = getAll();

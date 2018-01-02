@@ -20,7 +20,7 @@ import com.example.bisma.calendar_analyzer.models.EventModelDep;
 import com.example.bisma.calendar_analyzer.models.RemindersModel;
 import com.example.bisma.calendar_analyzer.ui.CreateEventActivity;
 import com.example.bisma.calendar_analyzer.ui.NotificationHandlerActivity;
-import com.example.bisma.calendar_analyzer.ui.ScheduleBarChartActivity;
+import com.example.bisma.calendar_analyzer.ui.ScheduleBarChartFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +30,8 @@ import java.util.List;
 public class TodaysTasksFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     protected ListView todaysTasksLv;
+    protected FloatingActionButton textualReportBtn;
+    protected FloatingActionButton barChartBtn;
     protected FloatingActionButton addTaskBtn;
     private List<EventModelDep> dataList = new ArrayList<>();
     private TodaysTasksAdapter adapter;
@@ -45,7 +47,7 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_view_report) {
-            startActivity(new Intent(getActivity(), ScheduleBarChartActivity.class));
+            startActivity(new Intent(getActivity(), ScheduleBarChartFragment.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -53,6 +55,10 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
     private void initView(View view) {
         todaysTasksLv = view.findViewById(R.id.todays_tasks_lv);
         todaysTasksLv.setOnItemClickListener(this);
+        textualReportBtn = view.findViewById(R.id.textual_report);
+        textualReportBtn.setOnClickListener(TodaysTasksFragment.this);
+        barChartBtn = view.findViewById(R.id.bar_chart);
+        barChartBtn.setOnClickListener(TodaysTasksFragment.this);
         addTaskBtn = view.findViewById(R.id.add_task);
         addTaskBtn.setOnClickListener(TodaysTasksFragment.this);
         getTodaysTasks();
@@ -85,6 +91,12 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         if (view.getId() == R.id.add_task) {
             startActivity(new Intent(getActivity(), CreateEventActivity.class));
+        } else if (view.getId() == R.id.textual_report){
+
+        } else if (view.getId() == R.id.bar_chart){
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_holder, new ScheduleBarChartFragment())
+                    .addToBackStack(null).commitAllowingStateLoss();
         }
     }
 

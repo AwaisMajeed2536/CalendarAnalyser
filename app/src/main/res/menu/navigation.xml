@@ -3,21 +3,21 @@
 
     <item
         android:id="@+id/pie_chart"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_pie"
         android:title="@string/pie_chart" />
 
     <item
         android:id="@+id/column_chart"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/events_table" />
+        android:title="Column Chart" />
 
     <item
         android:id="@+id/textual_report"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:icon="@drawable/ic_textual"
+        android:title="Textual Report" />
 
     <item
         android:id="@+id/bar_graph"
         android:title="Bar Graph"
-        android:icon="@drawable/ic_sign_out"/>
+        android:icon="@drawable/ic_bar_graph"/>
 </menu>

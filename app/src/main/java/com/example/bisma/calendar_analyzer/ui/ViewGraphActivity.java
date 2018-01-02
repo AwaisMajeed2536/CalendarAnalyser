@@ -23,6 +23,8 @@ public class ViewGraphActivity extends AppCompatActivity implements BottomNaviga
 
     private ArrayList<PieDataModel> pieData = new ArrayList<>();
     private ArrayList<EventModelDep> reportData = new ArrayList<>();
+    private String passedStartDate;
+    private String passedEndDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,14 @@ public class ViewGraphActivity extends AppCompatActivity implements BottomNaviga
         navigation.setOnNavigationItemSelectedListener(this);
         navigation.setSelected(true);
         getDataFromIntents();
+        addFragment(PieChartFragment.newInstance(pieData));
     }
 
     private void getDataFromIntents() {
         pieData = getIntent().getParcelableArrayListExtra(Constants.PIE_DATA_KEY);
         reportData = getIntent().getParcelableArrayListExtra(Constants.REPORT_DATA_KEY);
+        passedStartDate = getIntent().getStringExtra(Constants.START_DATE_PASS_KEY);
+        passedEndDate = getIntent().getStringExtra(Constants.END_DATE_PASS_KEY);
     }
 
     @Override
@@ -53,14 +58,18 @@ public class ViewGraphActivity extends AppCompatActivity implements BottomNaviga
                 selectedFragment = TextualReportFragment.newInstance(reportData);
                 break;
             case R.id.bar_graph:
-                selectedFragment = new ScheduleBarChartActivity();
+                selectedFragment = ScheduleBarChartFragment.newInstance(passedStartDate, passedEndDate);
                 break;
         }
         if (selectedFragment == null)
             return true;
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content, selectedFragment);
-        transaction.commit();
+        addFragment(selectedFragment);
         return true;
+    }
+
+    private void addFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content, fragment);
+        transaction.commit();
     }
 }

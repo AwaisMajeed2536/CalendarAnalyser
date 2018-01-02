@@ -1,10 +1,9 @@
 package com.example.bisma.calendar_analyzer.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,14 +24,17 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScheduleBarChartActivity extends Fragment {
+public class ScheduleBarChartFragment extends Fragment {
 
-    public static ScheduleBarChartActivity newInstance(String startDate, String endDate) {
+    public static final int[] COLORS = {
+            Color.rgb(193, 37, 82), Color.rgb(255, 102, 0)};
+
+    public static ScheduleBarChartFragment newInstance(String startDate, String endDate) {
 
         Bundle args = new Bundle();
         args.putString(Constants.START_DATE_PASS_KEY, startDate);
         args.putString(Constants.END_DATE_PASS_KEY, endDate);
-        ScheduleBarChartActivity fragment = new ScheduleBarChartActivity();
+        ScheduleBarChartFragment fragment = new ScheduleBarChartFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,17 +50,16 @@ public class ScheduleBarChartActivity extends Fragment {
     void createGraph(View view) {
         List<EventModelDep> data = new ArrayList<>();
         if (getActivity().getIntent().getExtras() == null) {
-            data = TasksSource.newInstance().getAll();
+            data = TasksSource.newInstance().getTodayEvents();
         } else {
             Intent intent = getActivity().getIntent();
             data = TasksSource.newInstance().getInRange(intent.getStringExtra(Constants.START_DATE_PASS_KEY),
                     intent.getStringExtra(Constants.END_DATE_PASS_KEY));
         }
         BarChart barChart = view.findViewById(R.id.bar_chart);
-        ListView titlesLv = view.findViewById(R.id.titles_lv);
         List<BarEntry> entries = new ArrayList<>();
-        long scheduledValue = 0;
-        long unScheduledValue = 0;
+        long scheduledValue = 0l;
+        long unScheduledValue = 0l;
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).isScheduled() == 0) {
                 scheduledValue++;
@@ -66,18 +67,15 @@ public class ScheduleBarChartActivity extends Fragment {
                 unScheduledValue++;
             }
         }
-        entries.add(new BarEntry(1f, unScheduledValue));
-        entries.add(new BarEntry(2f, scheduledValue));
-        BarDataSet dataSet = new BarDataSet(entries, "Tasks");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        entries.add(new BarEntry(1f, scheduledValue));
+        entries.add(new BarEntry(2f, unScheduledValue));
+        BarDataSet dataSet = new BarDataSet(entries, "");
+        dataSet.setColors(COLORS);
         BarData barData = new BarData(dataSet);
         barData.setBarWidth(0.9f); // set custom bar width
         barChart.setData(barData);
         barChart.setFitBars(true); // make the x-axis fit exactly all bars
         barChart.invalidate(); // refresh
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item,
-                getTaskTitles());
-        titlesLv.setAdapter(adapter);
     }
 
     private ArrayList<String> getTaskTitles() {

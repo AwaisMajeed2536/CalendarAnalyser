@@ -23,10 +23,18 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/result_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:padding="8dp"
+        android:text="Remarks: "
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/result_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:padding="8dp"
         android:textColor="@color/black"
         android:textSize="18sp" />
