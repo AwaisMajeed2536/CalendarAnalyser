@@ -1,5 +1,6 @@
 package com.example.bisma.calendar_analyzer.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.bisma.calendar_analyzer.NotificationService;
 import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
@@ -30,6 +32,7 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
     protected Button startBtn;
     protected Button pauseBtn;
     protected Button stopBtn;
+    RemindersModel intentData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
     public void onClick(View view) {
         if (view.getId() == R.id.start_btn) {
             mHandler.sendEmptyMessage(MSG_START_TIMER);
+            startService();
             startBtn.setEnabled(false);
         } else if (view.getId() == R.id.pause_btn) {
             if (isPlaying){
@@ -78,7 +82,7 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
     }
 
     private void setViewData() {
-        RemindersModel intentData = getIntent().getParcelableExtra(Constants.NOTIFICATION_DATA_PASS_KEY);
+        intentData = getIntent().getParcelableExtra(Constants.NOTIFICATION_DATA_PASS_KEY);
         if (intentData != null) {
             taskTitleTv.setText(intentData.getTitle());
             taskDescriptionTv.setText(intentData.getText());
@@ -156,4 +160,11 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
             }
         }
     };
+
+    public void startService() {
+        Intent serviceIntent = new Intent(this, NotificationService.class);
+        serviceIntent.putExtra(Constants.SERVICE_DATA_PASS_KEY, intentData);
+        serviceIntent.setAction(Constants.STARTFOREGROUND_ACTION);
+        startService(serviceIntent);
+    }
 }

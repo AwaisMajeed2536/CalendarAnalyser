@@ -102,15 +102,7 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
                     clickedEvent.getStartDate(), clickedEvent.getEndDate());
             Intent intent = new Intent(getActivity(), NotificationHandlerActivity.class);
             intent.putExtra(Constants.NOTIFICATION_DATA_PASS_KEY, model);
-            startService(model);
-//            startActivity(intent);
+            startActivity(intent);
         }
-    }
-
-    public void startService(RemindersModel model) {
-        Intent serviceIntent = new Intent(getActivity(), NotificationService.class);
-        serviceIntent.putExtra(Constants.SERVICE_DATA_PASS_KEY, model);
-        serviceIntent.setAction(Constants.STARTFOREGROUND_ACTION);
-        getActivity().startService(serviceIntent);
     }
 }
