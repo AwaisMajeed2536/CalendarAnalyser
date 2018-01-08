@@ -1,5 +1,11 @@
 package com.example.bisma.calendar_analyzer.helpers;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.example.bisma.calendar_analyzer.R;
+
 /**
  * Created by Devprovider on 16/08/2017.
  */
@@ -43,4 +49,29 @@ public class Constants {
     public static final String NOTIFICATION_DATA_PASS_KEY = "notification_data_pass_key";
     public static final String START_DATE_PASS_KEY = "START_DATE_PASS_KEY";
     public static final String END_DATE_PASS_KEY = "END_DATE_PASS_KEY";
+    public static final String SERVICE_DATA_PASS_KEY = "SERVICE_DATA_PASS_KEY";
+
+    public static String MAIN_ACTION = "com.action.main";
+    public static String PLAY_ACTION = "com.action.play";
+    public static String PAUSE_ACTION = "com.action.pause";
+    public static String STOP_ACTION = "com.action.stop";
+    public static String STARTFOREGROUND_ACTION = "com.action.startforeground";
+    public static String STOPFOREGROUND_ACTION = "com.action.stopforeground";
+
+    public interface NOTIFICATION_ID {
+        public static int FOREGROUND_SERVICE = 101;
+    }
+
+    public static Bitmap getDefaultAlbumArt(Context context) {
+        Bitmap bm = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        try {
+            bm = BitmapFactory.decodeResource(context.getResources(),
+                    R.mipmap.app_icon, options);
+        } catch (Error ee) {
+        } catch (Exception e) {
+        }
+        return bm;
+    }
+
 }

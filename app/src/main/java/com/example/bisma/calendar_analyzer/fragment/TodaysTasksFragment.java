@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.bisma.calendar_analyzer.NotificationService;
 import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.adapters.TodaysTasksAdapter;
 import com.example.bisma.calendar_analyzer.db.source.TasksSource;
@@ -20,7 +21,6 @@ import com.example.bisma.calendar_analyzer.models.EventModelDep;
 import com.example.bisma.calendar_analyzer.models.RemindersModel;
 import com.example.bisma.calendar_analyzer.ui.CreateEventActivity;
 import com.example.bisma.calendar_analyzer.ui.NotificationHandlerActivity;
-import com.example.bisma.calendar_analyzer.ui.ScheduleBarChartFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,14 +42,6 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_todays_tasks, container, false);
         initView(view);
         return view;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_view_report) {
-            startActivity(new Intent(getActivity(), ScheduleBarChartFragment.class));
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void initView(View view) {
@@ -78,7 +70,7 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
         todaysTasksLv.setAdapter(adapter);
     }
 
-    private void getData(){
+    private void getData() {
         List<EventModelDep> taskList = TasksSource.newInstance().getAll();
         for (EventModelDep obj : taskList) {
             if (!dataList.contains(obj)) {
@@ -91,9 +83,11 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         if (view.getId() == R.id.add_task) {
             startActivity(new Intent(getActivity(), CreateEventActivity.class));
-        } else if (view.getId() == R.id.textual_report){
-
-        } else if (view.getId() == R.id.bar_chart){
+        } else if (view.getId() == R.id.textual_report) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_holder, new TodaysTextualReportFragment())
+                    .addToBackStack(null).commitAllowingStateLoss();
+        } else if (view.getId() == R.id.bar_chart) {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_holder, new ScheduleBarChartFragment())
                     .addToBackStack(null).commitAllowingStateLoss();
@@ -108,7 +102,15 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
                     clickedEvent.getStartDate(), clickedEvent.getEndDate());
             Intent intent = new Intent(getActivity(), NotificationHandlerActivity.class);
             intent.putExtra(Constants.NOTIFICATION_DATA_PASS_KEY, model);
-            startActivity(intent);
+            startService(model);
+//            startActivity(intent);
         }
+    }
+
+    public void startService(RemindersModel model) {
+        Intent serviceIntent = new Intent(getActivity(), NotificationService.class);
+        serviceIntent.putExtra(Constants.SERVICE_DATA_PASS_KEY, model);
+        serviceIntent.setAction(Constants.STARTFOREGROUND_ACTION);
+        getActivity().startService(serviceIntent);
     }
 }

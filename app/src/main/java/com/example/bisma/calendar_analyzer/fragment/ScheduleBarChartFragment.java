@@ -1,4 +1,4 @@
-package com.example.bisma.calendar_analyzer.ui;
+package com.example.bisma.calendar_analyzer.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.db.source.TasksSource;
@@ -19,7 +17,6 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;

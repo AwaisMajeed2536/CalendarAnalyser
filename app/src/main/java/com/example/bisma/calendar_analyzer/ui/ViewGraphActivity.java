@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.fragment.BarChartFragment;
 import com.example.bisma.calendar_analyzer.fragment.PieChartFragment;
+import com.example.bisma.calendar_analyzer.fragment.ScheduleBarChartFragment;
 import com.example.bisma.calendar_analyzer.fragment.TextualReportFragment;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;

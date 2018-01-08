@@ -4,42 +4,32 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.view.DragAndDropPermissions;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.bisma.calendar_analyzer.R;
+import com.example.bisma.calendar_analyzer.db.source.TasksSource;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
-import com.example.bisma.calendar_analyzer.models.EventModel;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
-import com.github.mikephil.charting.data.BarEntry;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Devprovider on 29/08/2017.
+ * Created by Awais Majeed on 08-Jan-18.
  */
 
-public class TextualReportFragment extends Fragment {
+public class TodaysTextualReportFragment extends Fragment {
+
     protected TextView reportTv;
     protected TextView resultTv;
     private List<EventModelDep> dataList;
     boolean resultOk;
 
-    public static TextualReportFragment newInstance(ArrayList<EventModelDep> dataList) {
-
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(Constants.TEXTUAL_REPORT_PASS_KEY, dataList);
-        TextualReportFragment fragment = new TextualReportFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Nullable
     @Override
@@ -52,7 +42,7 @@ public class TextualReportFragment extends Fragment {
     private void initView(View rootView) {
         reportTv = rootView.findViewById(R.id.report_tv);
         resultTv = rootView.findViewById(R.id.result_tv);
-        dataList = getArguments().getParcelableArrayList(Constants.TEXTUAL_REPORT_PASS_KEY);
+        dataList = TasksSource.newInstance().getTodayEvents();
         reportTv.setText(analyzeDate());
         setResultText();
     }
@@ -87,6 +77,4 @@ public class TextualReportFragment extends Fragment {
         resultOk = hours -rep > ((dataList.size() * 8) / 2);
         return returner;
     }
-
-
 }

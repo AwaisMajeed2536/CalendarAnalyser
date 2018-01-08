@@ -19,4 +19,9 @@
     <string name="btm_nav_title_analyzer">Analyzer</string>
     <string name="btm_nav_title_reports">Reports</string>
     <string name="btm_nav_title_today">Today</string>
+
+    <string name="cd_repeat">Repeat one or all</string>
+    <string name="cd_previous">Skip backwards</string>
+    <string name="cd_play">Play and pause</string>
+    <string name="cd_next">Skip forwards</string>
 </resources>
