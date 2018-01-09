@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
+import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
 import com.example.bisma.calendar_analyzer.models.PieDataModel;
 import com.example.bisma.calendar_analyzer.ui.GoogleApi;
@@ -26,6 +27,8 @@ import java.util.Set;
 
 public class AnalyzerFragment extends Fragment implements View.OnClickListener {
 
+    protected DatePicker fromDatePicker;
+    protected DatePicker toDatePicker;
     private Button generateReportButton;
     private String fromDateString;
     private String toDateString;
@@ -36,32 +39,39 @@ public class AnalyzerFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_main);
         View rootView = inflator.inflate(R.layout.fragment_analyzer, container, false);
+        initView(rootView);
+        return rootView;
+    }
 
+    private void initView(View rootView) {
+        fromDatePicker = rootView.findViewById(R.id.from_date_picker);
+        toDatePicker = rootView.findViewById(R.id.to_date_picker);
         generateReportButton = rootView.findViewById(R.id.generate_report_button);
         generateReportButton.setOnClickListener(this);
-        return rootView;
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.generate_report_button) {
-            DatePicker fromDatePicker = (DatePicker) getView().findViewById(R.id.from_date_picker);
             int startDay = fromDatePicker.getDayOfMonth();
             int startMonth = fromDatePicker.getMonth() + 1;
             int startYear = fromDatePicker.getYear();
             fromDateString = startYear + "-" + String.format("%02d", startMonth) +
                     "-" + String.format("%02d", startDay) + " 00:01:00";
-            DatePicker toDatePicker = (DatePicker) getView().findViewById(R.id.to_date_picker);
             int endDay = toDatePicker.getDayOfMonth();
             int endMonth = toDatePicker.getMonth() + 1;
             int endYear = toDatePicker.getYear();
             toDateString = endYear + "-" + String.format("%02d", endMonth) +
                     "-" + String.format("%02d", endDay) + " 23:59:00";
-            Intent intent = new Intent(getActivity(), GoogleApi.class);
-            intent.putExtra(Constants.GOOGLE_API_CALL_TYPE_KEY, 0);
-            intent.putExtra(Constants.GOOGLE_API_STARTDATE_PASS_KEY, fromDateString);
-            intent.putExtra(Constants.GOOGLE_API_ENDDATE_PASS_KEY, toDateString);
-            startActivityForResult(intent, Constants.GOOGLE_API_GET_CALL_KEY);
+            if (UtilHelpers.getCalendarFromString(fromDateString).before(UtilHelpers.getCalendarFromString(toDateString))) {
+                Intent intent = new Intent(getActivity(), GoogleApi.class);
+                intent.putExtra(Constants.GOOGLE_API_CALL_TYPE_KEY, 0);
+                intent.putExtra(Constants.GOOGLE_API_STARTDATE_PASS_KEY, fromDateString);
+                intent.putExtra(Constants.GOOGLE_API_ENDDATE_PASS_KEY, toDateString);
+                startActivityForResult(intent, Constants.GOOGLE_API_GET_CALL_KEY);
+            } else {
+                Toast.makeText(getActivity(), "Invalid Date Range!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

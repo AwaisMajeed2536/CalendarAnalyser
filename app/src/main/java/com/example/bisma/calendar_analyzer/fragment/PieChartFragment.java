@@ -24,6 +24,7 @@ import com.example.bisma.calendar_analyzer.models.PieDataModel;
 import com.example.bisma.calendar_analyzer.services.SaveReportService;
 import com.example.bisma.calendar_analyzer.services.core.Result;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 
 //import android.text.Layout;
 
@@ -70,7 +72,7 @@ public class PieChartFragment extends Fragment {
     }
 
     private void initView(View rootView) {
-        mChart = (PieChart) rootView.findViewById(R.id.pie_graphview);
+        mChart = rootView.findViewById(R.id.pie_graphview);
         mainView = rootView.findViewById(R.id.pie_chart);
         recievedData = getArguments().getParcelableArrayList(Constants.PIE_DATA_KEY);
     }
@@ -82,6 +84,10 @@ public class PieChartFragment extends Fragment {
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(dataSet);
         mChart.setData(data);
+        Legend legend = mChart.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         mChart.invalidate();
     }
 
