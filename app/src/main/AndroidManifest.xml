@@ -16,8 +16,7 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.LoginActivity"
-            android:label="Login Activity">
+            android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,10 +26,9 @@
         <activity android:name=".ui.GoogleApi" />
         <activity android:name=".ui.CreateEventActivity" />
         <activity android:name=".ui.ManipulateTasksActivity" />
-        <activity android:name=".ui.NotificationHandlerActivity"></activity>
+        <activity android:name=".ui.NotificationHandlerActivity" />
         <activity android:name=".ui.ViewGraphActivity" />
-        <activity
-            android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity">
 
         </activity>
 
@@ -45,11 +43,14 @@
             android:name=".helpers.notifications.AlarmReceiver"
             android:process=":remote" />
 
-        <activity android:name=".fragment.ScheduleBarChartFragment"></activity>
+        <activity android:name=".fragment.ScheduleBarChartFragment" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="33ed1688bf347aea5884b52dd72e95a9a2b6cf82" />
+
         <service android:name=".NotificationService" />
+
     </application>
 
 </manifest>

@@ -1,21 +1,40 @@
 package com.example.bisma.calendar_analyzer.fragment;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.DragAndDropPermissions;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
+import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 import com.example.bisma.calendar_analyzer.models.EventModel;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
+import com.example.bisma.calendar_analyzer.services.SaveReportService;
+import com.example.bisma.calendar_analyzer.services.core.Result;
 import com.github.mikephil.charting.data.BarEntry;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +50,7 @@ public class TextualReportFragment extends Fragment {
     protected TextView resultTv;
     private List<EventModelDep> dataList;
     boolean resultOk;
+    View mainView;
 
     public static TextualReportFragment newInstance(ArrayList<EventModelDep> dataList) {
 
@@ -49,9 +69,38 @@ public class TextualReportFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.pie_chart_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_share) {
+            Bitmap screenShot = takeScreenShot(mainView);
+            Intent i = new Intent(Intent.ACTION_SEND);
+            String path = saveBitmap(screenShot);
+            Uri screenshotUri = Uri.parse(path);
+            i.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+            i.setType("image/png");
+            try {
+                startActivity(Intent.createChooser(i, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(getActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
+        } else if (item.getItemId() == R.id.action_save) {
+            Bitmap scrnShot = takeScreenShot(mainView);
+            String userId = UtilHelpers.getUserId(getActivity());
+            SaveReportService.newInstance(getActivity(), false, result).callService(getActivity(), scrnShot, userId);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initView(View rootView) {
         reportTv = rootView.findViewById(R.id.report_tv);
         resultTv = rootView.findViewById(R.id.result_tv);
+        mainView = rootView.findViewById(R.id.main_view);
         dataList = getArguments().getParcelableArrayList(Constants.TEXTUAL_REPORT_PASS_KEY);
         reportTv.setText(analyzeDate());
         setResultText();
@@ -88,5 +137,64 @@ public class TextualReportFragment extends Fragment {
         return returner;
     }
 
+
+    private String saveBitmap(Bitmap pictureBitmap) {
+        String path = Environment.getExternalStorageDirectory().toString();
+        OutputStream fOut;
+        File file = new File(path, "result.jpg"); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
+
+        try {
+            fOut = new FileOutputStream(file);
+            pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+            fOut.flush(); // Not really required
+            fOut.close(); // do not forget to close the stream
+
+            return MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public Bitmap takeScreenShot(View view) {
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        view.buildDrawingCache();
+
+        if (view.getDrawingCache() == null) return null;
+
+        Bitmap snapshot = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+        view.destroyDrawingCache();
+
+        return snapshot;
+    }
+
+    Result<String> result = new Result<String>() {
+        @Override
+        public void onSuccess(String data, int requestId) {
+            try {
+                JSONObject res = new JSONObject(data);
+                if (res.getString("status").equalsIgnoreCase("successful")) {
+                    Toast.makeText(getActivity(), "Report Saved", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Failed to save report", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(String message, int requestId) {
+            Toast.makeText(getActivity(), "Failed to save report", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Throwable throwable, int requestId) {
+            Toast.makeText(getActivity(), "Failed to save report", Toast.LENGTH_SHORT).show();
+        }
+    };
 
 }

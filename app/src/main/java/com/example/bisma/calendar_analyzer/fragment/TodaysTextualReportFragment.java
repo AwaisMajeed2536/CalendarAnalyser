@@ -59,22 +59,22 @@ public class TodaysTextualReportFragment extends Fragment {
 
     private String analyzeDate() {
         String returner = "Number of tasks scheduled is " + dataList.size() + "\n";
-        long hours = 0;
+        double hours = 0;
         for (EventModelDep obj : dataList) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
                 Date sDate = sdf.parse(obj.getStartDate());
                 Date eDate = sdf.parse(obj.getEndDate());
                 long difference = eDate.getTime() - sDate.getTime();
-                hours += TimeUnit.MILLISECONDS.toHours(difference);
+                hours = (difference / (1000.0d * 60.0d * 60.0d)) % 24.0d;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         returner += "Numbers of hours scheduled is " + hours + "\n";
-        long rep = (dataList.size() * 8) - hours;
+        double rep = (dataList.size() * 8.0d) - hours;
         returner += "Number of hours unscheduled is " + rep + "\n";
-        resultOk = hours -rep > ((dataList.size() * 8) / 2);
+        resultOk = hours - rep > ((dataList.size() * 8.0d) / 2.0d);
         return returner;
     }
 }

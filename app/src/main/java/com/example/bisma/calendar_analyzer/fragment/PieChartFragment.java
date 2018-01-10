@@ -177,12 +177,12 @@ public class PieChartFragment extends Fragment {
 
         @Override
         public void onFailure(String message, int requestId) {
-
+            Toast.makeText(getActivity(), "Failed to save report", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(Throwable throwable, int requestId) {
-            Toast.makeText(getActivity(), "Report Saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Failed to save report", Toast.LENGTH_SHORT).show();
         }
     };
 }

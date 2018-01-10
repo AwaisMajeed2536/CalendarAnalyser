@@ -45,8 +45,8 @@ public class ManipulateTasksActivity extends AppCompatActivity implements TaskEd
     }
 
     private void initView() {
-        tasksLv = (ListView) findViewById(R.id.tasks_lv);
-        searchEt = (EditText) findViewById(R.id.search_et);
+        tasksLv = findViewById(R.id.tasks_lv);
+        searchEt = findViewById(R.id.search_et);
         searchEt.addTextChangedListener(this);
         Intent intent = new Intent(this, GoogleApi.class);
         intent.putExtra(GOOGLE_API_CALL_TYPE_KEY, 0);

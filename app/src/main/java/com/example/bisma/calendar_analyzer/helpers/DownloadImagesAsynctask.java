@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import com.example.bisma.calendar_analyzer.interfaces.DownloadCallback;
 import com.example.bisma.calendar_analyzer.models.DBReportModel;
 import com.example.bisma.calendar_analyzer.models.DownloadReportsModel;
+import com.example.bisma.calendar_analyzer.services.core.RetrofitClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class DownloadImagesAsynctask extends AsyncTask<Void, Void, List<Download
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            BitmapHelper.downloadFile(obj.getReportUrl(), file);
+            BitmapHelper.downloadFile(RetrofitClient.BASE_URL + obj.getReportUrl(), file);
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
             returner.add(new DownloadReportsModel(obj.getReportId(), bitmap, obj.getUserId(), obj.getDateTime()));
 

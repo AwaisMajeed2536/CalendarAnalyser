@@ -15,9 +15,4 @@
         android:id="@+id/textual_report"
         android:icon="@drawable/ic_textual"
         android:title="Textual Report" />
-
-    <item
-        android:id="@+id/bar_graph"
-        android:title="Bar Graph"
-        android:icon="@drawable/ic_bar_graph"/>
 </menu>

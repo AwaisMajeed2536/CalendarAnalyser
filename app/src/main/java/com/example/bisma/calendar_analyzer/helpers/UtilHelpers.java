@@ -60,12 +60,12 @@ public class UtilHelpers {
                 waitDialog.setCancelable(false);
                 waitDialog.show();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void dismissWaitDialog(){
+    public static void dismissWaitDialog() {
         try {
             if (waitDialog != null && waitDialog.isShowing()) {
                 waitDialog.dismiss();
@@ -99,7 +99,7 @@ public class UtilHelpers {
     }
 
 
-    public static void showDateTimePicker(final Context context,final int type, final DatePickerCallback callback) {
+    public static void showDateTimePicker(final Context context, final int type, final DatePickerCallback callback) {
         final Calendar date;
         final Calendar currentDate = Calendar.getInstance();
         currentDate.setTime(new Date());
@@ -107,7 +107,7 @@ public class UtilHelpers {
         new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                date.set(year, (monthOfYear+1), dayOfMonth);
+                date.set(year, (monthOfYear + 1), dayOfMonth);
                 new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -121,30 +121,37 @@ public class UtilHelpers {
         }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
     }
 
-    public static void createLoginSession(Context context,String userId, int userType){
+    public static void createLoginSession(Context context, String userId, int userType) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(Constants.USER_ID_KEY, userId).apply();
         PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(Constants.USER_TYPE_KEY, userType).apply();
     }
 
-    public static boolean isUserLoggedIn(Context context){
-        if (PreferenceManager.getDefaultSharedPreferences(context).getString(Constants.USER_ID_KEY, "").equalsIgnoreCase("")){
+    public static void shouldRememberUser(Context context, boolean flag) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(Constants.REMEMBER_USER_KEY, flag).apply();
+    }
+
+    public static boolean isUserLoggedIn(Context context) {
+        if (PreferenceManager.getDefaultSharedPreferences(context).getString(Constants.USER_ID_KEY, "").equalsIgnoreCase("")) {
             return false;
         }
         return true;
     }
 
-    public static void endLoginSession(Context context){
+    public static boolean isRememberedUser(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(Constants.REMEMBER_USER_KEY, false);
+    }
+
+    public static void endLoginSession(Context context) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
     }
 
-    public static String getUserId(Context context){
+    public static String getUserId(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(Constants.USER_ID_KEY, "");
     }
 
-    public static int getUserType(Context context){
+    public static int getUserType(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(Constants.USER_TYPE_KEY, -1);
     }
-
 
 
     public static String getDateInFormat(Calendar dateTime, boolean addOne) {
@@ -156,14 +163,14 @@ public class UtilHelpers {
     }
 
     @NonNull
-    public static Calendar getCalendarFromString(String date){
+    public static Calendar getCalendarFromString(String date) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
             Date dt = sdf.parse(date);
-            Calendar calendar =  Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
             calendar.setTime(dt);
             return calendar;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Calendar.getInstance();
@@ -173,7 +180,7 @@ public class UtilHelpers {
         return (int) getDateInFormat(date).getTimeInMillis();
     }
 
-    public static Calendar getDateInFormat(String date){
+    public static Calendar getDateInFormat(String date) {
         SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
         Date dt = null;
         try {

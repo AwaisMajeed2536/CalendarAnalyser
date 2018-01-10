@@ -1,27 +1,44 @@
 package com.example.bisma.calendar_analyzer.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.bisma.calendar_analyzer.NotificationService;
 import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.adapters.TodaysTasksAdapter;
 import com.example.bisma.calendar_analyzer.db.source.TasksSource;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
+import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
 import com.example.bisma.calendar_analyzer.models.RemindersModel;
+import com.example.bisma.calendar_analyzer.services.SaveReportService;
+import com.example.bisma.calendar_analyzer.services.core.Result;
 import com.example.bisma.calendar_analyzer.ui.CreateEventActivity;
 import com.example.bisma.calendar_analyzer.ui.NotificationHandlerActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button loginBtn;
     private EditText emailET, passwordET;
     private ProgressDialog progressDialog;
+    private CheckBox rememberMeCb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Manifest.permission.ACCESS_NETWORK_STATE}, 1);
         }
         initView();
-        if (UtilHelpers.isUserLoggedIn(this)) {
+        if (UtilHelpers.isRememberedUser(this) && UtilHelpers.isUserLoggedIn(this)) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
     }
@@ -46,23 +48,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         String userId = emailET.getText().toString();
         int userType = -1;
-        if (userId.toLowerCase().startsWith("s")) {
-            userType = 0;
-        } else if (userId.toLowerCase().startsWith("f")) {
+        if (userId.toLowerCase().startsWith("f")) {
             userType = 1;
         } else if (userId.toLowerCase().startsWith("h")) {
             userType = 2;
         }
-        LoginService.newInstance(this, false, result).callService(userId, passwordET.getText().toString(), userType);
+        LoginService.newInstance(this, false, result)
+                .callService(userId, passwordET.getText().toString(), userType);
 
     }
 
     private void initView() {
         progressDialog = new ProgressDialog(this);
-        emailET = (EditText) findViewById(R.id.email);
-        passwordET = (EditText) findViewById(R.id.password);
-        loginBtn = (Button) findViewById(R.id.loginBtn);
+        emailET = findViewById(R.id.email);
+        passwordET = findViewById(R.id.password);
+        loginBtn = findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(this);
+        rememberMeCb = findViewById(R.id.rememberMe);
     }
 
     Result<String> result = new Result<String>() {
@@ -73,6 +75,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (response.getString("foundResult").equals("true")) {
                     UtilHelpers.createLoginSession(LoginActivity.this, response.getString("userId"),
                             response.getInt("userType"));
+                    if (rememberMeCb.isChecked()) {
+                        UtilHelpers.shouldRememberUser(LoginActivity.this, true);
+                    }
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();

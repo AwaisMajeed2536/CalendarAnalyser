@@ -2,23 +2,23 @@ package com.example.bisma.calendar_analyzer.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.bisma.calendar_analyzer.R;
-import com.example.bisma.calendar_analyzer.db.source.TasksSource;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
@@ -28,6 +28,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,14 +37,21 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public class ScheduleBarChartFragment extends Fragment {
+/**
+ * Created by Devprovider on 29/08/2017.
+ */
 
-    public static final int[] COLORS = {
-            Color.rgb(193, 37, 82), Color.rgb(255, 102, 0)};
-    private View mainView;
+public class ColumnChartFragment extends Fragment {
+    protected BarChart barChart;
+    protected ListView titlesLv;
+    private List<EventModelDep> dataList = new ArrayList<>();
+    View mainView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,12 +59,11 @@ public class ScheduleBarChartFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    public static ScheduleBarChartFragment newInstance(String startDate, String endDate) {
+    public static ColumnChartFragment newInstance(ArrayList<EventModelDep> dataList) {
 
         Bundle args = new Bundle();
-        args.putString(Constants.START_DATE_PASS_KEY, startDate);
-        args.putString(Constants.END_DATE_PASS_KEY, endDate);
-        ScheduleBarChartFragment fragment = new ScheduleBarChartFragment();
+        args.putParcelableArrayList(Constants.COLUMN_CHART_DATA_PASS_KEY, dataList);
+        ColumnChartFragment fragment = new ColumnChartFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,10 +71,9 @@ public class ScheduleBarChartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_schedule_bar_chart, container, false);
-        mainView = rootView.findViewById(R.id.main_view);
-        createGraph(rootView);
-        return rootView;
+        View view = inflater.inflate(R.layout.fragment_column_chart, container, false);
+        initView(view);
+        return view;
     }
 
     @Override
@@ -98,41 +104,47 @@ public class ScheduleBarChartFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    void createGraph(View view) {
-        List<EventModelDep> data = new ArrayList<>();
-        if (getActivity().getIntent().getExtras() == null) {
-            data = TasksSource.newInstance().getTodayEvents();
-        } else {
-            Intent intent = getActivity().getIntent();
-            data = TasksSource.newInstance().getInRange(intent.getStringExtra(Constants.START_DATE_PASS_KEY),
-                    intent.getStringExtra(Constants.END_DATE_PASS_KEY));
-        }
-        BarChart barChart = view.findViewById(R.id.bar_chart);
-        List<BarEntry> entries = new ArrayList<>();
-        long scheduledValue = 0l;
-        long unScheduledValue = 0l;
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).isScheduled() == 0) {
-                scheduledValue++;
-            } else {
-                unScheduledValue++;
-            }
-        }
-        entries.add(new BarEntry(1f, scheduledValue));
-        entries.add(new BarEntry(2f, unScheduledValue));
-        BarDataSet dataSet = new BarDataSet(entries, "");
-        dataSet.setColors(COLORS);
-        BarData barData = new BarData(dataSet);
+    private void initView(View rootView) {
+        barChart = rootView.findViewById(R.id.bar_chart);
+        titlesLv = rootView.findViewById(R.id.titles_lv);
+        mainView = rootView.findViewById(R.id.main_view);
+        dataList = getArguments().getParcelableArrayList(Constants.COLUMN_CHART_DATA_PASS_KEY);
+        BarData barData = new BarData(analyzeData());
         barData.setBarWidth(0.9f); // set custom bar width
         barChart.setData(barData);
         barChart.setFitBars(true); // make the x-axis fit exactly all bars
         barChart.invalidate(); // refresh
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item,
+                getTaskTitles());
+        titlesLv.setAdapter(adapter);
+    }
+
+    private BarDataSet analyzeData() {
+        List<BarEntry> entries = new ArrayList<>();
+        float i = 1f;
+        for (EventModelDep obj : dataList) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
+                Date sDate = sdf.parse(obj.getStartDate());
+                Date eDate = sdf.parse(obj.getEndDate());
+                long difference = eDate.getTime() - sDate.getTime();
+                long result = TimeUnit.MILLISECONDS.toMinutes(difference);
+                entries.add(new BarEntry(i++, result));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        BarDataSet dataSet = new BarDataSet(entries, "Tasks");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        return dataSet;
     }
 
     private ArrayList<String> getTaskTitles() {
         ArrayList<String> returner = new ArrayList<>();
-        returner.add("Scheduled");
-        returner.add("UnScheduled");
+        int i = 1;
+        for (EventModelDep obj : dataList) {
+            returner.add(i++ + ". " +obj.getEventTitle());
+        }
         return returner;
     }
 

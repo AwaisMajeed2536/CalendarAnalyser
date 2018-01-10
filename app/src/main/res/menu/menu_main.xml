@@ -4,8 +4,13 @@
     tools:context="com.example.bisma.calendar_analyzer.ui.MainActivity">
 
     <item
+        android:id="@+id/action_crud"
+        android:icon="@drawable/ic_crud"
+        android:title="CRUD"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_logout"
-        android:orderInCategory="100"
         android:icon="@drawable/ic_sign_out"
         android:title="Log Out"
         app:showAsAction="ifRoom" />

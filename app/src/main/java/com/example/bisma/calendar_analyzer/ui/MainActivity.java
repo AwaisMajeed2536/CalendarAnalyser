@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationH
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
             showLogoutDialog();
+        } else if (item.getItemId() == R.id.action_crud) {
+            startActivity(new Intent(this, ManipulateTasksActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

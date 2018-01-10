@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.bisma.calendar_analyzer.R;
-import com.example.bisma.calendar_analyzer.fragment.BarChartFragment;
+import com.example.bisma.calendar_analyzer.fragment.ColumnChartFragment;
 import com.example.bisma.calendar_analyzer.fragment.PieChartFragment;
 import com.example.bisma.calendar_analyzer.fragment.ScheduleBarChartFragment;
 import com.example.bisma.calendar_analyzer.fragment.TextualReportFragment;
@@ -53,12 +53,9 @@ public class ViewGraphActivity extends AppCompatActivity implements BottomNaviga
                 selectedFragment = PieChartFragment.newInstance(pieData);
                 break;
             case R.id.column_chart:
-                selectedFragment = BarChartFragment.newInstance(reportData);
+                selectedFragment = ColumnChartFragment.newInstance(reportData);
                 break;
             case R.id.textual_report:
-                selectedFragment = TextualReportFragment.newInstance(reportData);
-                break;
-            case R.id.bar_graph:
                 selectedFragment = ScheduleBarChartFragment.newInstance(passedStartDate, passedEndDate);
                 break;
         }

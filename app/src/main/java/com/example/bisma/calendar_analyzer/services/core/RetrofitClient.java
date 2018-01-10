@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://192.168.43.68/";
+    public static final String BASE_URL = "http://192.168.0.107/";
     private static final int TIME_OUT = 30;
     private static Retrofit retrofit = null;
 

@@ -34,13 +34,14 @@ public class Constants {
     public static final String PIE_DATA_KEY = "pie_data_key";
     public static final String REPORT_DATA_KEY = "event_data_key";
 
-    public static final String USER_ID_KEY = "user_id_key";
-    public static final String USER_TYPE_KEY = "user_type_key";
+    public static final String USER_ID_KEY = "USER_ID_KEY";
+    public static final String REPORT_TYPE_PASS_KEY = "REPORT_TYPE_PASS_KEY";
+    public static final String REMEMBER_USER_KEY = "REMEMBER_USER_KEY";
+    public static final String USER_TYPE_KEY = "USER_TYPE_KEY";
 
     public static final int USER_TYPE_HOD = 0;
     public static final int USER_TYPE_FACULTY = 1;
-    public static final int USER_TYPE_STUDENT = 2;
-    public static final String BAR_CHART_PASS_KEY = "bar_chart_pass_key";
+    public static final String COLUMN_CHART_DATA_PASS_KEY = "bar_chart_pass_key";
     public static final String TEXTUAL_REPORT_PASS_KEY = "textual_report_pass_key";
 
     public static final String RESULT_OK = "Your time management is satisfactory!";

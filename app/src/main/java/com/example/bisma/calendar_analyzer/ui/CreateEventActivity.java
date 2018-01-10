@@ -75,10 +75,12 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         if (requestCode == Constants.GOOGLE_API_CREATE_CALL_KEY) {
             if (resultCode == RESULT_OK && data != null) {
                 Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show();
+                finish();
             }
         } else if (requestCode == Constants.GOOGLE_API_UPDATE_CALL_KEY) {
             if (resultCode == RESULT_OK && data != null) {
                 Toast.makeText(this, "Event Updated", Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
