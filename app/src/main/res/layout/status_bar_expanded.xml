@@ -14,13 +14,6 @@
         android:padding="16dp"
         android:scaleType="centerCrop" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="1.0px"
-        android:layout_above="@+id/buttons"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/status_bar_album_art"
-        android:background="?android:dividerHorizontal" />
 
     <ImageButton
         android:id="@+id/status_bar_collapse"
@@ -32,27 +25,17 @@
         android:padding="8.0dip"
         android:src="@drawable/ic_close" />
 
-    <LinearLayout
-        android:id="@+id/textarea"
+    <TextView
+        android:id="@+id/status_bar_track_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="center_vertical"
-        android:layout_toLeftOf="@id/status_bar_collapse"
-        android:layout_toRightOf="@id/status_bar_album_art"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/notification_padding"
-        android:paddingTop="8.0dip">
-
-        <TextView
-            android:id="@+id/status_bar_track_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
-            android:focusable="true"
-            android:singleLine="true" />
-
-    </LinearLayout>
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/status_bar_collapse"
+        android:layout_toRightOf="@+id/status_bar_album_art"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:focusable="true"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 </RelativeLayout>
