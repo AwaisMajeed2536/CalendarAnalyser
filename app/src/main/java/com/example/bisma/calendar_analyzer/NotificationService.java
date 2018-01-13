@@ -4,6 +4,7 @@ package com.example.bisma.calendar_analyzer;
  * Created by Awais Majeed on 08-Jan-18.
  */
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.os.Handler;
@@ -44,21 +45,12 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         intentData = intent.getParcelableExtra(Constants.SERVICE_DATA_PASS_KEY);
+        getTotalTime(intentData.getStartDateTime(), intentData.getEndDateTime());
+        mHandler.sendEmptyMessage(MSG_START_TIMER);
         if (intent.getAction().equals(Constants.STARTFOREGROUND_ACTION)) {
-            showNotification();
             Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
 
-        } else if (intent.getAction().equals(Constants.PLAY_ACTION)) {
-            Toast.makeText(this, "Clicked Play", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Play");
-        } else if (intent.getAction().equals(Constants.PAUSE_ACTION)) {
-            Toast.makeText(this, "Clicked Pause", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Previous");
-        } else if (intent.getAction().equals(Constants.STOP_ACTION)) {
-            Toast.makeText(this, "Clicked Stop", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Next");
-        } else if (intent.getAction().equals(
-                Constants.STOPFOREGROUND_ACTION)) {
+        } else if (intent.getAction().equals(Constants.STOPFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Stop Foreground Intent");
             Toast.makeText(this, "Service Stoped", Toast.LENGTH_SHORT).show();
             stopForeground(true);
@@ -71,7 +63,6 @@ public class NotificationService extends Service {
 // Using RemoteViews to bind custom layouts into Notification
         RemoteViews views = new RemoteViews(getPackageName(),
                 R.layout.status_bar);
-        View view = View.inflate(this, R.layout.status_bar_expanded, null);
         RemoteViews bigViews = new RemoteViews(getPackageName(),
                 R.layout.status_bar_expanded);
 
@@ -88,51 +79,17 @@ public class NotificationService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, 0);
 
-        Intent playIntent = new Intent(this, NotificationService.class);
-        playIntent.setAction(Constants.PLAY_ACTION);
-        PendingIntent pplayIntent = PendingIntent.getService(this, 0,
-                playIntent, 0);
-
-        Intent pauseIntent = new Intent(this, NotificationService.class);
-        pauseIntent.setAction(Constants.PAUSE_ACTION);
-        PendingIntent ppauseIntent = PendingIntent.getService(this, 0,
-                pauseIntent, 0);
-
-        Intent stopIntent = new Intent(this, NotificationService.class);
-        stopIntent.setAction(Constants.STOP_ACTION);
-        PendingIntent pstopIntent = PendingIntent.getService(this, 0,
-                stopIntent, 0);
-
         Intent closeIntent = new Intent(this, NotificationService.class);
         closeIntent.setAction(Constants.STOPFOREGROUND_ACTION);
         PendingIntent pcloseIntent = PendingIntent.getService(this, 0,
                 closeIntent, 0);
 
-        views.setOnClickPendingIntent(R.id.play_btn, pplayIntent);
-        bigViews.setOnClickPendingIntent(R.id.play_btn, pplayIntent);
-
-        views.setOnClickPendingIntent(R.id.pause_btn, ppauseIntent);
-        bigViews.setOnClickPendingIntent(R.id.pause_btn, ppauseIntent);
-
-        views.setOnClickPendingIntent(R.id.stop_btn, pstopIntent);
-        bigViews.setOnClickPendingIntent(R.id.stop_btn, pstopIntent);
-
         views.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
         bigViews.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
-
-        views.setImageViewResource(R.id.status_bar_play,
-                R.drawable.ic_pause);
-        bigViews.setImageViewResource(R.id.status_bar_play,
-                R.drawable.ic_pause);
 
         views.setTextViewText(R.id.status_bar_track_name, intentData.getTitle());
         bigViews.setTextViewText(R.id.status_bar_track_name, intentData.getTitle());
 
-        String totalTime = getTotalTime(intentData.getStartDateTime(), intentData.getEndDateTime());
-        String[] times = totalTime.split(",");
-        bigViews.setTextViewText(R.id.hour_tv, times[0]);
-        bigViews.setTextViewText(R.id.min_tv, times[1]);
-        bigViews.setTextViewText(R.id.sec_tv, times[2]);
 
         status = new Notification.Builder(this).build();
         status.contentView = views;
@@ -143,14 +100,64 @@ public class NotificationService extends Service {
         startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
     }
 
-    private String getTotalTime(String startDateTime, String endDateTime) {
+    private void getTotalTime(String startDateTime, String endDateTime) {
         Calendar startTime = UtilHelpers.getCalendarFromString(startDateTime);
         Calendar endTime = UtilHelpers.getCalendarFromString(endDateTime);
         long diff = endTime.getTimeInMillis() - startTime.getTimeInMillis();
-        int secs = (int) (diff / 1000) % 60;
-        int mins = (int) (diff / 60000) % 60;
-        int hours = (int) (diff / 3600000) % 60;
-        return (String.format("%02d", hours) + "," + String.format("%02d", mins) + "," + String.format("%02d", secs));
+        secs = (int) (diff / 1000) % 60;
+        mins = (int) (diff / 60000) % 60;
+        hours = (int) (diff / 3600000) % 60;
     }
+
+    final int MSG_START_TIMER = 0;
+    final int MSG_STOP_TIMER = 1;
+    final int MSG_PAUSE_TIMER = 2;
+    final int MSG_UPDATE_TIMER = 3;
+    int hours, mins, secs;
+    final int REFRESH_RATE = 1000;
+
+    @SuppressLint("HandlerLeak")
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_START_TIMER:
+                    mHandler.sendEmptyMessage(MSG_UPDATE_TIMER);
+                    break;
+
+                case MSG_UPDATE_TIMER:
+                    if (--secs < 0) {
+                        secs = 59;
+                        mins--;
+                        String.format("%02d", mins);
+                    }
+                    if (mins < 0) {
+                        mins = 59;
+                        hours--;
+                        String.format("%02d", hours);
+                    }
+                    if (hours < 0) {
+                        mHandler.removeMessages(MSG_UPDATE_TIMER); // no more updates.
+                    }
+                    if (mins < 10) {
+                        showNotification();
+                    }
+                    mHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIMER, REFRESH_RATE); //text view is updated every second,
+                    break;
+                case MSG_PAUSE_TIMER:
+                    hours = mins = secs = 0;
+                    mHandler.removeMessages(MSG_UPDATE_TIMER); // no more updates.
+                    break;
+                case MSG_STOP_TIMER:
+                    hours = mins = secs = 0;
+                    mHandler.removeMessages(MSG_UPDATE_TIMER); // no more updates.
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
 
 }

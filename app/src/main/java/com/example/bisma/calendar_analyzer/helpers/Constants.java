@@ -53,9 +53,6 @@ public class Constants {
     public static final String SERVICE_DATA_PASS_KEY = "SERVICE_DATA_PASS_KEY";
 
     public static String MAIN_ACTION = "com.action.main";
-    public static String PLAY_ACTION = "com.action.play";
-    public static String PAUSE_ACTION = "com.action.pause";
-    public static String STOP_ACTION = "com.action.stop";
     public static String STARTFOREGROUND_ACTION = "com.action.startforeground";
     public static String STOPFOREGROUND_ACTION = "com.action.stopforeground";
 

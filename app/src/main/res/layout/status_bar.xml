@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAccent"
     android:orientation="horizontal">
 
     <ImageView
@@ -42,19 +42,7 @@
         android:id="@+id/status_bar_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cd_play" />
-
-    <ImageButton
-        android:id="@+id/status_bar_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/cd_next"
-        android:src="@drawable/ic_play" />
-
-    <ImageButton
-        android:id="@+id/status_bar_collapse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_expand" />
+        android:background="?android:selectableItemBackground"
+        android:src="@drawable/ic_close" />
 
 </LinearLayout>

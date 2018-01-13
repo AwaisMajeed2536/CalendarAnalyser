@@ -1,5 +1,6 @@
 package com.example.bisma.calendar_analyzer.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -112,6 +113,7 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
     int hours, mins, secs;
     final int REFRESH_RATE = 1000;
 
+    @SuppressLint("HandlerLeak")
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
