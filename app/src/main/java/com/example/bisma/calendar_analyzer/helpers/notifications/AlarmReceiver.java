@@ -20,7 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             int id = intent.getIntExtra(Constants.REMINDER_ID_PASS_KEY,0);
             RemindersModel reminder = RemindersSource.newInstance().getById(id);
             if (reminder != null) {
-                NotificationUtils.newInstance(context).showGeneralNotification(reminder);
+//                NotificationUtils.newInstance(context).showGeneralNotification(reminder);
                 RemindersSource.newInstance().delete(reminder.getId());
             }
         }

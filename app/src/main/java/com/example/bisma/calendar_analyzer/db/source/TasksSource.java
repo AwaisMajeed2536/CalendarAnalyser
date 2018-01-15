@@ -19,6 +19,7 @@ import static com.example.bisma.calendar_analyzer.db.DBConstants.Tasks.DESCRIPTI
 import static com.example.bisma.calendar_analyzer.db.DBConstants.Tasks.START_DATE_TIME;
 import static com.example.bisma.calendar_analyzer.db.DBConstants.Tasks.END_DATE_TIME;
 import static com.example.bisma.calendar_analyzer.db.DBConstants.Tasks.IS_SCHEDULED;
+import static com.example.bisma.calendar_analyzer.db.DBConstants.Tasks.COMPLETED;
 
 /**
  * Created by Devprovider on 15/08/2017.
@@ -41,6 +42,7 @@ public class TasksSource extends BaseDataSource<EventModelDep> {
         values.put(START_DATE_TIME, model.getStartDate());
         values.put(END_DATE_TIME, model.getEndDate());
         values.put(IS_SCHEDULED, model.isScheduled());
+        values.put(COMPLETED, model.isCompleted());
     }
 
     @NonNull
@@ -53,6 +55,7 @@ public class TasksSource extends BaseDataSource<EventModelDep> {
         model.setStartDate(cursor.getString(cursor.getColumnIndex(START_DATE_TIME)));
         model.setEndDate(cursor.getString(cursor.getColumnIndex(END_DATE_TIME)));
         model.setScheduled(cursor.getInt(cursor.getColumnIndex(IS_SCHEDULED)));
+        model.setCompleted(cursor.getInt(cursor.getColumnIndex(COMPLETED)) != 0);
         return model;
     }
 

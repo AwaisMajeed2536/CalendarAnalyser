@@ -43,13 +43,12 @@
             android:name=".helpers.notifications.AlarmReceiver"
             android:process=":remote" />
 
-        <activity android:name=".fragment.ScheduleBarChartFragment" />
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="33ed1688bf347aea5884b52dd72e95a9a2b6cf82" />
 
         <service android:name=".NotificationService" />
+        <service android:name=".TimerService" android:exported="false" android:process=":remote"/>
 
     </application>
 

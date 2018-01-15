@@ -39,7 +39,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/status_bar_play"
+        android:id="@+id/status_bar_collapse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"

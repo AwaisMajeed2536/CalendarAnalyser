@@ -20,6 +20,7 @@ public class DBConstants {
         public static final String START_DATE_TIME = "start_date_time";
         public static final String END_DATE_TIME = "end_date_time";
         public static final String IS_SCHEDULED = "is_local";
+        public static final String COMPLETED = "completed";
     }//Feed
 
     public static class Reminders {

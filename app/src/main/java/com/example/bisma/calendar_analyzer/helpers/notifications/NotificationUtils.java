@@ -37,8 +37,8 @@ public class NotificationUtils {
         return new NotificationUtils(mContext);
     }
 
-    public void showGeneralNotification(RemindersModel reminder) {
-        Notification notification = buildNotification(1, reminder).build();
+    public void showGeneralNotification(int id, String title, String des, int hours, int mins, int secs) {
+        Notification notification = buildNotification(id, title, des, hours, mins, secs).build();
         Uri uri = Uri.parse("android.resource://" + mContext.getPackageName() + "/" + R.raw.notification_tone);
         notification.sound = uri;
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -46,13 +46,18 @@ public class NotificationUtils {
         notificationManager.notify(1, notification);
     }
 
-    protected NotificationCompat.Builder buildNotification(int notificationId, RemindersModel reminder) {
+    protected NotificationCompat.Builder buildNotification(int notificationId, String title, String des, int hours, int mins, int secs) {
         Intent intent = new Intent(mContext, NotificationHandlerActivity.class);
-        intent.putExtra(Constants.NOTIFICATION_DATA_PASS_KEY, reminder);
+        intent.putExtra(Constants.ID_PASS_KEY, notificationId);
+        intent.putExtra(Constants.TITLE_PASS_KEY, title);
+        intent.putExtra(Constants.DESC_PASS_KEY, des);
+        intent.putExtra(Constants.SEC_PASS_KEY, secs);
+        intent.putExtra(Constants.MIN_PASS_KEY, mins);
+        intent.putExtra(Constants.HOUR_PASS_KEY, hours);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pIntent = PendingIntent.getActivity(
                 mContext,
-                notificationId,
+                1,
                 intent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -65,15 +70,13 @@ public class NotificationUtils {
                 .setAutoCancel(true)
                 // Set PendingIntent into Notification
                 .setContentIntent(pIntent);
-            // Build a simpler notification, without buttons
-            //
-            builder = builder.setContentTitle(mContext.getString(R.string.app_name))
-                    .setContentText(reminder.getTitle())
-                    .setSmallIcon(R.drawable.ic_nav_add_reminder);
+        // Build a simpler notification, without buttons
+        //
+        builder = builder.setContentTitle(mContext.getString(R.string.app_name))
+                .setContentText("10 Minutes left for: " + title)
+                .setSmallIcon(R.drawable.ic_nav_add_reminder);
         return builder;
     }
-
-
 
 
 }

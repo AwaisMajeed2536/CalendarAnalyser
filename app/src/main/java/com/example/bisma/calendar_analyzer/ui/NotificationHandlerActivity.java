@@ -11,10 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.bisma.calendar_analyzer.NotificationService;
 import com.example.bisma.calendar_analyzer.R;
+import com.example.bisma.calendar_analyzer.TimerService;
+import com.example.bisma.calendar_analyzer.db.source.TasksSource;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
+import com.example.bisma.calendar_analyzer.models.EventModelDep;
 import com.example.bisma.calendar_analyzer.models.RemindersModel;
 
 import java.util.Calendar;
@@ -34,6 +36,7 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
     protected Button pauseBtn;
     protected Button stopBtn;
     RemindersModel intentData;
+    private int id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
     }
 
     boolean isPlaying = true;
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.start_btn) {
@@ -50,11 +54,11 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
             startService();
             startBtn.setEnabled(false);
         } else if (view.getId() == R.id.pause_btn) {
-            if (isPlaying){
+            if (isPlaying) {
                 pauseBtn.setText("RESUME");
                 mHandler.sendEmptyMessage(MSG_PAUSE_TIMER);
                 isPlaying = false;
-            }else{
+            } else {
                 pauseBtn.setText("PAUSE");
                 mHandler.sendEmptyMessage(MSG_START_TIMER);
                 isPlaying = true;
@@ -85,6 +89,7 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
     private void setViewData() {
         intentData = getIntent().getParcelableExtra(Constants.NOTIFICATION_DATA_PASS_KEY);
         if (intentData != null) {
+            id = intentData.getId();
             taskTitleTv.setText(intentData.getTitle());
             taskDescriptionTv.setText(intentData.getText());
             String totalTime = getTotalTime(intentData.getStartDateTime(), intentData.getEndDateTime());
@@ -92,6 +97,18 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
             hourTv.setText(times[0]);
             minTv.setText(times[1]);
             secTv.setText(times[2]);
+        } else {
+            if (getIntent().getStringExtra(Constants.TITLE_PASS_KEY) != null) {
+                Intent intent = getIntent();
+                id = intent.getIntExtra(Constants.ID_PASS_KEY, 0);
+                taskTitleTv.setText(intent.getStringExtra(Constants.TITLE_PASS_KEY));
+                taskDescriptionTv.setText(intent.getStringExtra(Constants.DESC_PASS_KEY));
+                hourTv.setText(String.format("%02d", intent.getIntExtra(Constants.HOUR_PASS_KEY, 0)));
+                minTv.setText(String.format("%02d", intent.getIntExtra(Constants.MIN_PASS_KEY, 0)));
+                secTv.setText(String.format("%02d", intent.getIntExtra(Constants.SEC_PASS_KEY, 0)));
+                mHandler.sendEmptyMessage(MSG_START_TIMER);
+                startBtn.setEnabled(false);
+            }
         }
     }
 
@@ -120,9 +137,9 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_START_TIMER:
-                    hours = Integer.parseInt(hourTv.getText().toString());
-                    mins = Integer.parseInt(minTv.getText().toString());
-                    secs = Integer.parseInt(secTv.getText().toString());
+                    hours = Integer.parseInt(hourTv.getText().toString().equals("") ? "00" : hourTv.getText().toString());
+                    mins = Integer.parseInt(minTv.getText().toString().equals("") ? "00" : minTv.getText().toString());
+                    secs = Integer.parseInt(secTv.getText().toString().equals("") ? "00" : secTv.getText().toString());
                     mHandler.sendEmptyMessage(MSG_UPDATE_TIMER);
                     break;
 
@@ -164,9 +181,12 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
     };
 
     public void startService() {
-        Intent serviceIntent = new Intent(this, NotificationService.class);
+        Intent serviceIntent = new Intent(this, TimerService.class);
         serviceIntent.putExtra(Constants.SERVICE_DATA_PASS_KEY, intentData);
-        serviceIntent.setAction(Constants.STARTFOREGROUND_ACTION);
         startService(serviceIntent);
+        Constants.taskRunning = true;
+        TasksSource.newInstance().insertOrUpdate(new EventModelDep(id, taskTitleTv.getText().toString(),
+                taskDescriptionTv.getText().toString(), UtilHelpers.getDateInFormat(Calendar.getInstance(), true),
+                UtilHelpers.getDateInFormat(Calendar.getInstance(), true), true));
     }
 }

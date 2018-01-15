@@ -38,25 +38,33 @@ public class NotificationService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        intentData = intent.getParcelableExtra(Constants.SERVICE_DATA_PASS_KEY);
+
         return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        intentData = intent.getParcelableExtra(Constants.SERVICE_DATA_PASS_KEY);
-        getTotalTime(intentData.getStartDateTime(), intentData.getEndDateTime());
-        mHandler.sendEmptyMessage(MSG_START_TIMER);
-        if (intent.getAction().equals(Constants.STARTFOREGROUND_ACTION)) {
-            Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+        if (intent != null) {
+            intentData = intent.getParcelableExtra(Constants.SERVICE_DATA_PASS_KEY);
+            if (intentData != null) {
+                getTotalTime(intentData.getStartDateTime(), intentData.getEndDateTime());
+                mHandler.sendEmptyMessage(MSG_START_TIMER);
+            } else {
+                Toast.makeText(this, "Error Running BG Service", Toast.LENGTH_SHORT).show();
+            }
+            if (intent.getAction().equals(Constants.STARTFOREGROUND_ACTION)) {
+                Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
 
-        } else if (intent.getAction().equals(Constants.STOPFOREGROUND_ACTION)) {
-            Log.i(LOG_TAG, "Received Stop Foreground Intent");
-            Toast.makeText(this, "Service Stoped", Toast.LENGTH_SHORT).show();
-            stopForeground(true);
-            stopSelf();
+            } else if (intent.getAction().equals(Constants.STOPFOREGROUND_ACTION)) {
+                Log.i(LOG_TAG, "Received Stop Foreground Intent");
+                Toast.makeText(this, "Service Stoped", Toast.LENGTH_SHORT).show();
+                stopForeground(true);
+                stopSelf();
+            }
+        } else {
+            Toast.makeText(this, "Error Running BG Service", Toast.LENGTH_SHORT).show();
         }
-        return START_STICKY;
+        return super.onStartCommand(intent, flags, startId);
     }
 
     private void showNotification() {
@@ -73,6 +81,11 @@ public class NotificationService extends Service {
                 Constants.getDefaultAlbumArt(this));
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.putExtra(Constants.TITLE_PASS_KEY, intentData.getTitle());
+        notificationIntent.putExtra(Constants.DESC_PASS_KEY, intentData.getText());
+        notificationIntent.putExtra(Constants.SEC_PASS_KEY, secs);
+        notificationIntent.putExtra(Constants.MIN_PASS_KEY, mins);
+        notificationIntent.putExtra(Constants.HOUR_PASS_KEY, hours);
         notificationIntent.setAction(Constants.MAIN_ACTION);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);

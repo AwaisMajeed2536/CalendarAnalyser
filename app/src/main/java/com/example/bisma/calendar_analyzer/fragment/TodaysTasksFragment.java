@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.bisma.calendar_analyzer.NotificationService;
 import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.adapters.TodaysTasksAdapter;
 import com.example.bisma.calendar_analyzer.db.source.TasksSource;
@@ -113,13 +112,21 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        EventModelDep clickedEvent = (EventModelDep) parent.getAdapter().getItem(position);
-        if (!clickedEvent.getEventTitle().equalsIgnoreCase("")) {
-            RemindersModel model = new RemindersModel(0, clickedEvent.getEventTitle(), clickedEvent.getDescription(),
-                    clickedEvent.getStartDate(), clickedEvent.getEndDate());
-            Intent intent = new Intent(getActivity(), NotificationHandlerActivity.class);
-            intent.putExtra(Constants.NOTIFICATION_DATA_PASS_KEY, model);
-            startActivity(intent);
+        if (!Constants.taskRunning) {
+            EventModelDep clickedEvent = (EventModelDep) parent.getAdapter().getItem(position);
+            if (!clickedEvent.isCompleted()) {
+                if (!clickedEvent.getEventTitle().equalsIgnoreCase("")) {
+                    RemindersModel model = new RemindersModel(0, clickedEvent.getEventTitle(), clickedEvent.getDescription(),
+                            clickedEvent.getStartDate(), clickedEvent.getEndDate());
+                    Intent intent = new Intent(getActivity(), NotificationHandlerActivity.class);
+                    intent.putExtra(Constants.NOTIFICATION_DATA_PASS_KEY, model);
+                    startActivity(intent);
+                }
+            }else {
+                Toast.makeText(getActivity(), "Task already completed!", Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            Toast.makeText(getActivity(), "Task already running!", Toast.LENGTH_SHORT).show();
         }
     }
 }

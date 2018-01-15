@@ -51,10 +51,17 @@ public class Constants {
     public static final String START_DATE_PASS_KEY = "START_DATE_PASS_KEY";
     public static final String END_DATE_PASS_KEY = "END_DATE_PASS_KEY";
     public static final String SERVICE_DATA_PASS_KEY = "SERVICE_DATA_PASS_KEY";
+    public static final String ID_PASS_KEY = "ID_PASS_KEY";
+    public static final String TITLE_PASS_KEY = "TITLE_PASS_KEY";
+    public static final String DESC_PASS_KEY = "DESC_PASS_KEY";
+    public static final String SEC_PASS_KEY = "SEC_PASS_KEY";
+    public static final String MIN_PASS_KEY = "MIN_PASS_KEY";
+    public static final String HOUR_PASS_KEY = "HOUR_PASS_KEY";
 
     public static String MAIN_ACTION = "com.action.main";
     public static String STARTFOREGROUND_ACTION = "com.action.startforeground";
     public static String STOPFOREGROUND_ACTION = "com.action.stopforeground";
+    public static boolean taskRunning = false;
 
     public interface NOTIFICATION_ID {
         public static int FOREGROUND_SERVICE = 101;
