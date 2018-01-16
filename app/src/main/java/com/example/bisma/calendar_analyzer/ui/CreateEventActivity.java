@@ -19,6 +19,7 @@ import com.example.bisma.calendar_analyzer.models.EventModelDep;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, DatePickerCallback {
@@ -45,6 +46,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         if (view.getId() == R.id.create_event_btn) {
             event = new EventModelDep();
+            event.setEventID(UtilHelpers.getIdFromDate(UtilHelpers.getDateInFormat(startDateToPass, true)));
             event.setEventTitle(eventTitleEt.getText().toString());
             event.setDescription(descriptionEt.getText().toString());
             event.setStartDate(UtilHelpers.getDateInFormat(startDateToPass, false));

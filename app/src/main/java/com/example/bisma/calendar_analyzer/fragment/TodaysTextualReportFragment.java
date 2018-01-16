@@ -14,6 +14,7 @@ import com.example.bisma.calendar_analyzer.db.source.TasksSource;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +59,7 @@ public class TodaysTextualReportFragment extends Fragment {
     }
 
     private String analyzeDate() {
+        DecimalFormat df2 = new DecimalFormat(".##");
         String returner = "Number of tasks scheduled is " + dataList.size() + "\n";
         double hours = 0;
         for (EventModelDep obj : dataList) {
@@ -66,14 +68,14 @@ public class TodaysTextualReportFragment extends Fragment {
                 Date sDate = sdf.parse(obj.getStartDate());
                 Date eDate = sdf.parse(obj.getEndDate());
                 long difference = eDate.getTime() - sDate.getTime();
-                hours = (difference / (1000.0d * 60.0d * 60.0d)) % 24.0d;
+                hours += (difference / (1000.0d * 60.0d * 60.0d)) % 24.0d;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        returner += "Numbers of hours scheduled is " + hours + "\n";
+        returner += "Numbers of hours scheduled is " + df2.format(hours) + "\n";
         double rep = (dataList.size() * 8.0d) - hours;
-        returner += "Number of hours unscheduled is " + rep + "\n";
+        returner += "Number of hours unscheduled is " + df2.format(rep) + "\n";
         resultOk = hours - rep > ((dataList.size() * 8.0d) / 2.0d);
         return returner;
     }
