@@ -74,9 +74,9 @@ public class TodaysTextualReportFragment extends Fragment {
             }
         }
         returner += "Numbers of hours scheduled is " + df2.format(hours) + "\n";
-        double rep = (dataList.size() * 8.0d) - hours;
+        double rep = 8.0d - hours;
         returner += "Number of hours unscheduled is " + df2.format(rep) + "\n";
-        resultOk = hours - rep > ((dataList.size() * 8.0d) / 2.0d);
+        resultOk = hours - rep > 4.0d;
         return returner;
     }
 }
