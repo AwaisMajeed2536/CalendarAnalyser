@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bisma.calendar_analyzer.R;
+import com.example.bisma.calendar_analyzer.db.source.TasksSource;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
@@ -109,9 +110,9 @@ public class TextualReportFragment extends Fragment {
     private void initView(View rootView) {
         resultTv = rootView.findViewById(R.id.result_tv);
         mainView = rootView.findViewById(R.id.main_view);
-        dataList = getArguments().getParcelableArrayList(Constants.TEXTUAL_REPORT_PASS_KEY);
         startDate = getArguments().getString(Constants.START_DATE_PASS_KEY);
         endDate = getArguments().getString(Constants.END_DATE_PASS_KEY);
+        dataList = TasksSource.newInstance().getInRange(startDate,endDate);
         startDateTv = rootView.findViewById(R.id.start_date_tv);
         endDateTv = rootView.findViewById(R.id.end_date_tv);
         scheduledTasksTv = rootView.findViewById(R.id.scheduled_tasks_tv);
