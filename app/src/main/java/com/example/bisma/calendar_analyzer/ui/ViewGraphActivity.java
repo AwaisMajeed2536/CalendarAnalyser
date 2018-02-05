@@ -59,7 +59,7 @@ public class ViewGraphActivity extends AppCompatActivity implements BottomNaviga
                 selectedFragment = ScheduleBarChartFragment.newInstance(passedStartDate, passedEndDate);
                 break;
             case R.id.textual_report:
-                selectedFragment = ScheduleBarChartFragment.newInstance(passedStartDate, passedEndDate);
+                selectedFragment = TextualReportFragment.newInstance(reportData, passedStartDate, passedEndDate);
                 break;
         }
         if (selectedFragment == null)

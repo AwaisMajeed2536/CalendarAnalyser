@@ -43,11 +43,11 @@ public class TodaysTextualReportFragment extends Fragment {
 
     private void initView(View rootView) {
         dataList = TasksSource.newInstance().getTodayEvents();
-        setResultText();
         scheduledTasksTv = rootView.findViewById(R.id.scheduled_tasks_tv);
         scheduledHoursTv = rootView.findViewById(R.id.scheduled_hours_tv);
         unscheduledTasksTv = rootView.findViewById(R.id.unscheduled_tasks_tv);
         unscheduledHoursTv = rootView.findViewById(R.id.unscheduled_hours_tv);
+        setResultText();
     }
 
     private void setResultText() {

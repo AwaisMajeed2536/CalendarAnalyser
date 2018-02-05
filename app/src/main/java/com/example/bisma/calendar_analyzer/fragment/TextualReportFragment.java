@@ -112,13 +112,13 @@ public class TextualReportFragment extends Fragment {
         dataList = getArguments().getParcelableArrayList(Constants.TEXTUAL_REPORT_PASS_KEY);
         startDate = getArguments().getString(Constants.START_DATE_PASS_KEY);
         endDate = getArguments().getString(Constants.END_DATE_PASS_KEY);
-        setResultText();
         startDateTv = rootView.findViewById(R.id.start_date_tv);
         endDateTv = rootView.findViewById(R.id.end_date_tv);
         scheduledTasksTv = rootView.findViewById(R.id.scheduled_tasks_tv);
         scheduledHoursTv = rootView.findViewById(R.id.scheduled_hours_tv);
         unscheduledTasksTv = rootView.findViewById(R.id.unscheduled_tasks_tv);
         unscheduledHoursTv = rootView.findViewById(R.id.unscheduled_hours_tv);
+        setResultText();
     }
 
     private void setResultText() {
