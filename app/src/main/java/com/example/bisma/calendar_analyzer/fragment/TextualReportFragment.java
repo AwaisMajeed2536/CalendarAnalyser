@@ -133,9 +133,9 @@ public class TextualReportFragment extends Fragment {
         }
         startDateTv.setText(startDate);
         endDateTv.setText(endDate);
-        scheduledTasksTv.setText(scheduledTasksCount);
-        scheduledHoursTv.setText(unScheduledTasksCount);
-        unscheduledTasksTv.setText(df2.format(scheduledHoursCount));
+        scheduledTasksTv.setText(String.valueOf(scheduledTasksCount));
+        scheduledHoursTv.setText(String.valueOf(scheduledHoursCount));
+        unscheduledTasksTv.setText(df2.format(unScheduledTasksCount));
         unscheduledHoursTv.setText(df2.format(unScheduledHoursCount));
     }
 
