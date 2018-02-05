@@ -122,7 +122,7 @@ public class TextualReportFragment extends Fragment {
     }
 
     private void setResultText() {
-        DecimalFormat df2 = new DecimalFormat(".##");
+        DecimalFormat df2 = new DecimalFormat("##.##");
         analyzeDate();
         if (resultOk) {
             resultTv.setText(Constants.RESULT_OK);
@@ -141,21 +141,23 @@ public class TextualReportFragment extends Fragment {
 
     private void analyzeDate() {
         for (EventModelDep obj : dataList) {
-            if (obj.isScheduled() == 1)
-                scheduledTasksCount++;
-            else
-                unScheduledTasksCount++;
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
                 Date sDate = sdf.parse(obj.getStartDate());
                 Date eDate = sdf.parse(obj.getEndDate());
                 long difference = eDate.getTime() - sDate.getTime();
-                scheduledHoursCount += difference / (1000.0d * 60.0d * 60.0d);
+                if (obj.isScheduled() == 1) {
+                    scheduledTasksCount++;
+                    scheduledHoursCount += difference / (1000.0d * 60.0d * 60.0d);
+                } else {
+                    unScheduledTasksCount++;
+                    unScheduledHoursCount += difference / (1000.0d * 60.0d * 60.0d);
+
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        scheduledHoursCount = (8.0d * dataList.size()) - scheduledHoursCount;
         resultOk = scheduledHoursCount - scheduledHoursCount > ((dataList.size() * 8) / 2);
     }
 

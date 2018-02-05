@@ -51,7 +51,7 @@ public class TodaysTextualReportFragment extends Fragment {
     }
 
     private void setResultText() {
-        DecimalFormat df2 = new DecimalFormat(".##");
+        DecimalFormat df2 = new DecimalFormat("##.##");
         analyzeDate();
         scheduledTasksTv.setText(String.valueOf(scheduledTasksCount));
         scheduledHoursTv.setText(df2.format(scheduledHoursCount));
@@ -61,20 +61,21 @@ public class TodaysTextualReportFragment extends Fragment {
 
     private void analyzeDate() {
         for (EventModelDep obj : dataList) {
-            if (obj.isScheduled() == 1)
-                scheduledTasksCount++;
-            else
-                unScheduledTasksCount++;
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
                 Date sDate = sdf.parse(obj.getStartDate());
                 Date eDate = sdf.parse(obj.getEndDate());
                 long difference = eDate.getTime() - sDate.getTime();
-                scheduledHoursCount += (difference / (1000.0d * 60.0d * 60.0d)) % 24.0d;
+                if (obj.isScheduled() == 1) {
+                    scheduledHoursCount += (difference / (1000.0d * 60.0d * 60.0d)) % 24.0d;
+                    scheduledTasksCount++;
+                } else {
+                    unScheduledHoursCount += (difference / (1000.0d * 60.0d * 60.0d)) % 24.0d;
+                    unScheduledTasksCount++;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        scheduledHoursCount = 8.0d - scheduledHoursCount;
     }
 }
