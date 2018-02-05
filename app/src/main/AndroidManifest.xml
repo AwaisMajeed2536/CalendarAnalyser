@@ -37,7 +37,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ui.ReportsHistoryActivity" />
-        <activity android:name=".ui.CreateLocalEventActivity" />
 
         <receiver
             android:name=".helpers.notifications.AlarmReceiver"

@@ -12,6 +12,11 @@
         android:title="Column Chart" />
 
     <item
+        android:id="@+id/bar_chart"
+        android:icon="@drawable/ic_bar_graph"
+        android:title="Bar Graph" />
+
+    <item
         android:id="@+id/textual_report"
         android:icon="@drawable/ic_textual"
         android:title="Textual Report" />

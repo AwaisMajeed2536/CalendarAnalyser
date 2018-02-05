@@ -1,5 +1,6 @@
 package com.example.bisma.calendar_analyzer.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -9,7 +10,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.view.DragAndDropPermissions;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,11 +22,9 @@ import android.widget.Toast;
 import com.example.bisma.calendar_analyzer.R;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
-import com.example.bisma.calendar_analyzer.models.EventModel;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
 import com.example.bisma.calendar_analyzer.services.SaveReportService;
 import com.example.bisma.calendar_analyzer.services.core.Result;
-import com.github.mikephil.charting.data.BarEntry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,27 +33,38 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Devprovider on 29/08/2017.
  */
 
 public class TextualReportFragment extends Fragment {
-    protected TextView reportTv;
     protected TextView resultTv;
+    protected View rootView;
+    protected TextView startDateTv;
+    protected TextView endDateTv;
+    protected TextView scheduledTasksTv;
+    protected TextView scheduledHoursTv;
+    protected TextView unscheduledTasksTv;
+    protected TextView unscheduledHoursTv;
     private List<EventModelDep> dataList;
     boolean resultOk;
     View mainView;
+    private int scheduledTasksCount, unScheduledTasksCount;
+    private double scheduledHoursCount, unScheduledHoursCount;
+    private String startDate, endDate;
 
-    public static TextualReportFragment newInstance(ArrayList<EventModelDep> dataList) {
+    public static TextualReportFragment newInstance(ArrayList<EventModelDep> dataList, String startDate, String endDate) {
 
         Bundle args = new Bundle();
         args.putParcelableArrayList(Constants.TEXTUAL_REPORT_PASS_KEY, dataList);
+        args.putString(Constants.START_DATE_PASS_KEY, startDate);
+        args.putString(Constants.END_DATE_PASS_KEY, endDate);
         TextualReportFragment fragment = new TextualReportFragment();
         fragment.setArguments(args);
         return fragment;
@@ -86,7 +95,7 @@ public class TextualReportFragment extends Fragment {
             i.setType("image/png");
             try {
                 startActivity(Intent.createChooser(i, "Send mail..."));
-            } catch (android.content.ActivityNotFoundException ex) {
+            } catch (ActivityNotFoundException ex) {
                 Toast.makeText(getActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
             }
         } else if (item.getItemId() == R.id.action_save) {
@@ -98,15 +107,23 @@ public class TextualReportFragment extends Fragment {
     }
 
     private void initView(View rootView) {
-        reportTv = rootView.findViewById(R.id.report_tv);
         resultTv = rootView.findViewById(R.id.result_tv);
         mainView = rootView.findViewById(R.id.main_view);
         dataList = getArguments().getParcelableArrayList(Constants.TEXTUAL_REPORT_PASS_KEY);
-        reportTv.setText(analyzeDate());
+        startDate = getArguments().getString(Constants.START_DATE_PASS_KEY);
+        endDate = getArguments().getString(Constants.END_DATE_PASS_KEY);
         setResultText();
+        startDateTv = rootView.findViewById(R.id.start_date_tv);
+        endDateTv = rootView.findViewById(R.id.end_date_tv);
+        scheduledTasksTv = rootView.findViewById(R.id.scheduled_tasks_tv);
+        scheduledHoursTv = rootView.findViewById(R.id.scheduled_hours_tv);
+        unscheduledTasksTv = rootView.findViewById(R.id.unscheduled_tasks_tv);
+        unscheduledHoursTv = rootView.findViewById(R.id.unscheduled_hours_tv);
     }
 
     private void setResultText() {
+        DecimalFormat df2 = new DecimalFormat(".##");
+        analyzeDate();
         if (resultOk) {
             resultTv.setText(Constants.RESULT_OK);
             resultTv.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_green_light));
@@ -114,27 +131,32 @@ public class TextualReportFragment extends Fragment {
             resultTv.setText(Constants.RESULT_FAIL);
             resultTv.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_light));
         }
+        startDateTv.setText(startDate);
+        endDateTv.setText(endDate);
+        scheduledTasksTv.setText(df2.format(scheduledTasksCount));
+        scheduledHoursTv.setText(df2.format(unScheduledTasksCount));
+        unscheduledTasksTv.setText(df2.format(scheduledHoursCount));
+        unscheduledHoursTv.setText(df2.format(unScheduledHoursCount));
     }
 
-    private String analyzeDate() {
-        String returner = "Number of tasks scheduled is " + dataList.size() + "\n";
-        long hours = 0;
+    private void analyzeDate() {
         for (EventModelDep obj : dataList) {
+            if (obj.isScheduled() == 1)
+                scheduledTasksCount++;
+            else
+                unScheduledTasksCount++;
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
                 Date sDate = sdf.parse(obj.getStartDate());
                 Date eDate = sdf.parse(obj.getEndDate());
                 long difference = eDate.getTime() - sDate.getTime();
-                hours += TimeUnit.MILLISECONDS.toHours(difference);
+                scheduledHoursCount += difference / (1000.0d * 60.0d * 60.0d);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        returner += "Numbers of hours scheduled is " + hours + "\n";
-        long rep = (dataList.size() * 8) - hours;
-        returner += "Number of hours unscheduled is " + rep + "\n";
-        resultOk = hours -rep > ((dataList.size() * 8) / 2);
-        return returner;
+        scheduledHoursCount = (8.0d * dataList.size()) - scheduledHoursCount;
+        resultOk = scheduledHoursCount - scheduledHoursCount > ((dataList.size() * 8) / 2);
     }
 
 
