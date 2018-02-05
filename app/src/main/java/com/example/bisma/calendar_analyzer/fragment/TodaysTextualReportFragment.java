@@ -54,8 +54,8 @@ public class TodaysTextualReportFragment extends Fragment {
         DecimalFormat df2 = new DecimalFormat(".##");
         analyzeDate();
         scheduledTasksTv.setText(String.valueOf(scheduledTasksCount));
-        scheduledHoursTv.setText(String.valueOf(scheduledHoursCount));
-        unscheduledTasksTv.setText(df2.format(unScheduledTasksCount));
+        scheduledHoursTv.setText(df2.format(scheduledHoursCount));
+        unscheduledTasksTv.setText(String.valueOf(unScheduledTasksCount));
         unscheduledHoursTv.setText(df2.format(unScheduledHoursCount));
     }
 
