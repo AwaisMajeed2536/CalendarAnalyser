@@ -112,7 +112,7 @@ public class ScheduleBarChartFragment extends Fragment {
         long scheduledValue = 0l;
         long unScheduledValue = 0l;
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).isScheduled() == 0) {
+            if (data.get(i).isScheduled() == 1) {
                 scheduledValue++;
             } else {
                 unScheduledValue++;
