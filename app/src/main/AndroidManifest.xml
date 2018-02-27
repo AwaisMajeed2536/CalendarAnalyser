@@ -17,11 +17,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.GoogleApi" />
         <activity android:name=".ui.CreateEventActivity" />
@@ -29,7 +25,11 @@
         <activity android:name=".ui.NotificationHandlerActivity" />
         <activity android:name=".ui.ViewGraphActivity" />
         <activity android:name=".ui.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <meta-data

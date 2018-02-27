@@ -54,7 +54,6 @@ public class TextualReportFragment extends Fragment {
     protected TextView unscheduledTasksTv;
     protected TextView unscheduledHoursTv;
     private List<EventModelDep> dataList;
-    boolean resultOk;
     View mainView;
     private int scheduledTasksCount, unScheduledTasksCount;
     private double scheduledHoursCount, unScheduledHoursCount;
@@ -125,15 +124,8 @@ public class TextualReportFragment extends Fragment {
     private void setResultText() {
         DecimalFormat df2 = new DecimalFormat("##.##");
         analyzeDate();
-        if (resultOk) {
-            resultTv.setText(Constants.RESULT_OK);
-            resultTv.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_green_light));
-        } else {
-            resultTv.setText(Constants.RESULT_FAIL);
-            resultTv.setTextColor(ContextCompat.getColor(getActivity(), android.R.color.holo_red_light));
-        }
-        startDateTv.setText(startDate);
-        endDateTv.setText(endDate);
+        startDateTv.setText(startDate.split(" ")[0]);
+        endDateTv.setText(endDate.split(" ")[0]);
         scheduledTasksTv.setText(String.valueOf(scheduledTasksCount));
         scheduledHoursTv.setText(df2.format(scheduledHoursCount));
         unscheduledTasksTv.setText(String.valueOf(unScheduledTasksCount));
@@ -159,7 +151,6 @@ public class TextualReportFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-        resultOk = scheduledHoursCount - scheduledHoursCount > ((dataList.size() * 8) / 2);
     }
 
 
