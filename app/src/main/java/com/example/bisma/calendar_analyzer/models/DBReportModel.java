@@ -6,16 +6,17 @@ package com.example.bisma.calendar_analyzer.models;
 
 public class DBReportModel {
     int reportId;
-    String userId, reportUrl, dateTime;
+    String userId, reportUrl, dateTime, userName;
 
     public DBReportModel() {
     }
 
-    public DBReportModel(int reportId, String userId, String reportUrl, String dateTime) {
+    public DBReportModel(int reportId, String userId, String reportUrl, String dateTime, String userName) {
         this.reportId = reportId;
         this.userId = userId;
         this.reportUrl = reportUrl;
         this.dateTime = dateTime;
+        this.userName = userName;
     }
 
     public int getReportId() {
@@ -48,5 +49,13 @@ public class DBReportModel {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

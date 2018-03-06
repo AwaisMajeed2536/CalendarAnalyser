@@ -9,16 +9,17 @@ import android.graphics.Bitmap;
 public class DownloadReportsModel {
     private int reportId;
     private Bitmap reportImage;
-    private String userId, dateTime;
+    private String userId, dateTime, userName;
 
     public DownloadReportsModel() {
     }
 
-    public DownloadReportsModel(int reportId, Bitmap reportImage, String userId, String dateTime) {
+    public DownloadReportsModel(int reportId, Bitmap reportImage, String userId, String dateTime, String userName) {
         this.reportId = reportId;
         this.reportImage = reportImage;
         this.userId = userId;
         this.dateTime = dateTime;
+        this.userName = userName;
     }
 
     public int getReportId() {
@@ -51,5 +52,13 @@ public class DownloadReportsModel {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

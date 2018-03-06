@@ -53,16 +53,15 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             event.setEndDate(UtilHelpers.getDateInFormat(endDateToPass, false));
             event.setScheduled(0);
             TasksSource.newInstance().insertOrUpdate(event);
-            Intent intent = new Intent(this, GoogleApi.class);
-            if (getIntent().getExtras() == null) {
-                intent.putExtra(Constants.GOOGLE_API_CALL_TYPE_KEY, 2);
-                intent.putExtra(Constants.GOOGLE_API_EVENT_MODEL_PASS_KEY, event);
-                startActivityForResult(intent, Constants.GOOGLE_API_CREATE_CALL_KEY);
-            } else {
+            if (getIntent().getExtras() != null) {
+                Intent intent = new Intent(this, GoogleApi.class);
                 intent.putExtra(Constants.GOOGLE_API_CALL_TYPE_KEY, 3);
                 intent.putExtra(Constants.GOOGLE_API_EVENT_MODEL_PASS_KEY, event);
                 startActivityForResult(intent, Constants.GOOGLE_API_UPDATE_CALL_KEY);
             }
+
+            Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show();
+            finish();
         } else if (view.getId() == R.id.startDate_tv) {
             UtilHelpers.showDateTimePicker(this, 0, this);
         } else if (view.getId() == R.id.endDate_tv) {
@@ -74,12 +73,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.GOOGLE_API_CREATE_CALL_KEY) {
-            if (resultCode == RESULT_OK && data != null) {
-                Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        } else if (requestCode == Constants.GOOGLE_API_UPDATE_CALL_KEY) {
+        if (requestCode == Constants.GOOGLE_API_UPDATE_CALL_KEY) {
             if (resultCode == RESULT_OK && data != null) {
                 Toast.makeText(this, "Event Updated", Toast.LENGTH_SHORT).show();
                 finish();

@@ -48,7 +48,7 @@ public class ReportsHistoryActivity extends AppCompatActivity implements AllRepo
 
     @Override
     public void onLinksDownloaded(List<DBReportModel> reports) {
-        if (reportType == 1) {
+        if (reportType == 0) {
             new DownloadImagesAsynctask(this, filterList(reports), this).execute();
         } else {
             new DownloadImagesAsynctask(this, reports, this).execute();
@@ -67,7 +67,7 @@ public class ReportsHistoryActivity extends AppCompatActivity implements AllRepo
     private ArrayList<String> getDates(List<DownloadReportsModel> images) {
         ArrayList<String> returner = new ArrayList<>();
         for (DownloadReportsModel obj : images) {
-            returner.add(obj.getDateTime());
+            returner.add(obj.getUserName() + " " + obj.getDateTime());
         }
         return returner;
     }

@@ -50,7 +50,7 @@ public class DownloadImagesAsynctask extends AsyncTask<Void, Void, List<Download
             }
             BitmapHelper.downloadFile(RetrofitClient.BASE_URL + obj.getReportUrl(), file);
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            returner.add(new DownloadReportsModel(obj.getReportId(), bitmap, obj.getUserId(), obj.getDateTime()));
+            returner.add(new DownloadReportsModel(obj.getReportId(), bitmap, obj.getUserId(), obj.getDateTime(), obj.getUserName()));
 
         }
         return returner;

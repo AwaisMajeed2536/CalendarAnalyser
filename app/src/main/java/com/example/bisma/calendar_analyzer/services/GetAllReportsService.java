@@ -52,7 +52,7 @@ public class GetAllReportsService implements Callback<String> {
             for(int i=0; i<res.length(); i++){
                 JSONObject obj = new JSONObject((new JSONArray(response.body())).get(i).toString());
                 returner.add(new DBReportModel(obj.getInt("reportId"), obj.getString("userId"),
-                        obj.getString("reportUrl"), obj.getString("dateTime")));
+                        obj.getString("reportUrl"), obj.getString("dateTime"), obj.getString("userName")));
             }
         } catch (JSONException e) {
             e.printStackTrace();

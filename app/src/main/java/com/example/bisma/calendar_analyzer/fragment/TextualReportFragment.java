@@ -45,7 +45,6 @@ import java.util.List;
  */
 
 public class TextualReportFragment extends Fragment {
-    protected TextView resultTv;
     protected View rootView;
     protected TextView startDateTv;
     protected TextView endDateTv;
@@ -107,7 +106,6 @@ public class TextualReportFragment extends Fragment {
     }
 
     private void initView(View rootView) {
-        resultTv = rootView.findViewById(R.id.result_tv);
         mainView = rootView.findViewById(R.id.main_view);
         startDate = getArguments().getString(Constants.START_DATE_PASS_KEY);
         endDate = getArguments().getString(Constants.END_DATE_PASS_KEY);

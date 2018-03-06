@@ -13,7 +13,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:drawableTop="@drawable/ic_report"
-        android:text="Your Analysis Report"
+        android:text="My Analysis Reports"
         android:textColor="@color/colorPrimary"
         android:background="@null"
 
@@ -28,7 +28,7 @@
         android:layout_marginRight="40dp"
         android:layout_marginTop="40dp"
         android:drawableTop="@drawable/ic_report_user"
-        android:text="Employes Analysis Report"
+        android:text="Employees Analysis Reports"
         android:textColor="@color/colorPrimary"
         android:layout_weight="0.10" />
 </LinearLayout>
