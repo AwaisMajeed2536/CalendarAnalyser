@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationH
                 if (taskList == null || taskList.size() == 0) {
                     UtilHelpers.showAlertDialog(this, "No Events", getString(R.string.no_events_for_this_month));
                 } else {
-                    TasksSource.newInstance().insertOrUpdate(taskList);
+                    TasksSource.newInstance().insertOrUpdateAsync(taskList);
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
 

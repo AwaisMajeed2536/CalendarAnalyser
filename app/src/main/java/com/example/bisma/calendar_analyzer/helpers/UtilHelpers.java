@@ -177,9 +177,11 @@ public class UtilHelpers {
     }
 
     public static int getIdFromDate(String date) {
-        Calendar cal = getDateInFormat(date);
-        return cal.get(Calendar.YEAR) + cal.get(Calendar.MONTH) + cal.get(Calendar.DAY_OF_MONTH)
-                + cal.get(Calendar.HOUR) + cal.get(Calendar.MINUTE) + cal.get(Calendar.SECOND);
+        String[] both = date.split(" " );
+        String[] dmy = both[0].split("-");
+        String[] hms = both[1].split(":");
+        return Integer.parseInt(dmy[0]) + (10 * Integer.parseInt(dmy[1])) + (100 * Integer.parseInt(dmy[2]))
+                + Integer.parseInt(hms[0]) + Integer.parseInt(hms[1]) + Integer.parseInt(hms[2]);
     }
 
     public static Calendar getDateInFormat(String date) {
