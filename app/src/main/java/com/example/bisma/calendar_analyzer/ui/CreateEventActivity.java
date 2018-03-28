@@ -1,6 +1,7 @@
 package com.example.bisma.calendar_analyzer.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.bisma.calendar_analyzer.models.EventModelDep;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -45,6 +47,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.create_event_btn) {
+            List<EventModelDep> events = TasksSource.newInstance().getByDate(UtilHelpers.getDateInFormat(startDateToPass, true));
+            for (EventModelDep event : events) {
+                if (!timeIsNotColliding(event)) {
+                    Toast.makeText(this, "Time is colliding with another task!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
             event = new EventModelDep();
             event.setEventID(UtilHelpers.getIdFromDate(UtilHelpers.getDateInFormat(startDateToPass, true)));
             event.setEventTitle(eventTitleEt.getText().toString());
@@ -121,5 +130,16 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             endDateToPass = calendar;
             setEndDate(date);
         }
+    }
+
+    private boolean timeIsNotColliding(EventModelDep event) {
+        boolean flag = false;
+        Calendar oldTaskStartDate = UtilHelpers.getCalendarFromString(event.getStartDate());
+        Calendar oldTaskEndDate = UtilHelpers.getCalendarFromString(event.getEndDate());
+        if (startDateToPass.before(oldTaskStartDate) && endDateToPass.before(oldTaskStartDate))
+            flag = true;
+        if (startDateToPass.after(oldTaskStartDate) && endDateToPass.after(oldTaskEndDate))
+            flag = true;
+        return flag;
     }
 }
