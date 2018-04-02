@@ -100,12 +100,11 @@ public class ScheduleBarChartFragment extends Fragment {
 
     void createGraph(View view) {
         List<EventModelDep> data = new ArrayList<>();
-        if (getActivity().getIntent().getExtras() == null) {
+        if (getArguments() == null) {
             data = TasksSource.newInstance().getTodayEvents();
         } else {
-            Intent intent = getActivity().getIntent();
-            data = TasksSource.newInstance().getInRange(intent.getStringExtra(Constants.START_DATE_PASS_KEY),
-                    intent.getStringExtra(Constants.END_DATE_PASS_KEY));
+            data = TasksSource.newInstance().getInRange(getArguments().getString(Constants.START_DATE_PASS_KEY),
+                    getArguments().getString(Constants.END_DATE_PASS_KEY));
         }
         BarChart barChart = view.findViewById(R.id.bar_chart);
         List<BarEntry> entries = new ArrayList<>();

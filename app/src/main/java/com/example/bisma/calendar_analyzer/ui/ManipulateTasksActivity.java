@@ -60,11 +60,7 @@ public class ManipulateTasksActivity extends AppCompatActivity implements TaskEd
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dataList.remove(item);
-                        adapter = new TasksAdapter(ManipulateTasksActivity.this, dataList, ManipulateTasksActivity.this);
-                        tasksLv.setAdapter(adapter);
-                        eventId = item.getEventID();
-                        deleteEvent();
+                        showDeleteDialog(item);
                     }
                 }).setNegativeButton("Edit", new DialogInterface.OnClickListener() {
             @Override
@@ -128,5 +124,26 @@ public class ManipulateTasksActivity extends AppCompatActivity implements TaskEd
                 Toast.makeText(this, "Some Error Occured", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void showDeleteDialog(final EventModelDep item) {
+        new AlertDialog.Builder(this).setTitle("Delete the following task?")
+                .setMessage(item.getEventTitle() + "\n" + "Dated: " + item.getStartDate())
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        dataList.remove(item);
+                        adapter = new TasksAdapter(ManipulateTasksActivity.this, dataList, ManipulateTasksActivity.this);
+                        tasksLv.setAdapter(adapter);
+                        eventId = item.getEventID();
+                        deleteEvent();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
     }
 }
