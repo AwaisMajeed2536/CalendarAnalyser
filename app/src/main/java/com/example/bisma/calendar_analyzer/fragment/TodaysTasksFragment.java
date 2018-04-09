@@ -70,8 +70,6 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
         addTaskBtn = view.findViewById(R.id.add_task);
         addTaskBtn.setOnClickListener(TodaysTasksFragment.this);
         getTodaysTasks();
-        adapter = new TodaysTasksAdapter(getActivity(), dataList);
-        todaysTasksLv.setAdapter(adapter);
     }
 
     public void getTodaysTasks() {
@@ -128,5 +126,11 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
         }else {
             Toast.makeText(getActivity(), "Task already running!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getTodaysTasks();
     }
 }
