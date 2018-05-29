@@ -1,13 +1,11 @@
 package com.example.bisma.calendar_analyzer.ui;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +17,7 @@ import com.example.bisma.calendar_analyzer.interfaces.DatePickerCallback;
 import com.example.bisma.calendar_analyzer.models.EventModelDep;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener, DatePickerCallback {

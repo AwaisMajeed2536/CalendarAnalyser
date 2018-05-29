@@ -12,7 +12,8 @@ public class EventModelDep implements Parcelable{
     private String startDateTime;
     private String endDateTime;
     private int isScheduled = 1;
-    private boolean completed = false;
+    //0 for pending, 1 for running and 2 for completed
+    private int status = 0;
 
     public EventModelDep() {
         this.eventID = 0;
@@ -21,7 +22,7 @@ public class EventModelDep implements Parcelable{
         this.startDateTime = "";
         this.endDateTime = "";
         isScheduled = 1;
-        completed = false;
+        status = 0;
     }
 
     protected EventModelDep(Parcel in) {
@@ -31,7 +32,7 @@ public class EventModelDep implements Parcelable{
         startDateTime = in.readString();
         endDateTime = in.readString();
         isScheduled = in.readInt();
-        completed = in.readByte() != 0;
+        status = in.readInt();
     }
 
     @Override
@@ -42,7 +43,7 @@ public class EventModelDep implements Parcelable{
         dest.writeString(startDateTime);
         dest.writeString(endDateTime);
         dest.writeInt(isScheduled);
-        dest.writeByte((byte) (completed ? 1 : 0));
+        dest.writeInt(status);
     }
 
     @Override
@@ -62,12 +63,12 @@ public class EventModelDep implements Parcelable{
         }
     };
 
-    public boolean isCompleted() {
-        return completed;
+    public int getStatus() {
+        return status;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int isScheduled() {
@@ -85,17 +86,17 @@ public class EventModelDep implements Parcelable{
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.isScheduled = 1;
-        completed = false;
+        status = 0;
     }
 
-    public EventModelDep(int eventID, String eventTitle, String description, String startDateTime, String endDateTime, boolean completed) {
+    public EventModelDep(int eventID, String eventTitle, String description, String startDateTime, String endDateTime, int status) {
         this.eventID = eventID;
         this.eventTitle = eventTitle;
         this.description = description;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.isScheduled = 1;
-        this.completed = completed;
+        this.status = status;
     }
 
     public int getEventID() {

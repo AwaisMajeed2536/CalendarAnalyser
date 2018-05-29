@@ -19,7 +19,7 @@ public class Queries {
                 .addTextField(DBConstants.Tasks.START_DATE_TIME)
                 .addTextField(DBConstants.Tasks.END_DATE_TIME)
                 .addIntegerField(DBConstants.Tasks.IS_SCHEDULED)
-                .addIntegerField(DBConstants.Tasks.COMPLETED)
+                .addIntegerField(DBConstants.Tasks.STATUS)
                 .generate(DBConstants.Tasks.TABLE_NAME);
     } // createTasks
 

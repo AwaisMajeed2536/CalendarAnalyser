@@ -110,11 +110,11 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (!Constants.taskRunning) {
-            EventModelDep clickedEvent = (EventModelDep) parent.getAdapter().getItem(position);
-            if (!clickedEvent.isCompleted()) {
+        EventModelDep clickedEvent = (EventModelDep) parent.getAdapter().getItem(position);
+        if (!(clickedEvent.getStatus() == 1)) {
+            if (clickedEvent.getStatus() == 0) {
                 if (!clickedEvent.getEventTitle().equalsIgnoreCase("")) {
-                    RemindersModel model = new RemindersModel(0, clickedEvent.getEventTitle(), clickedEvent.getDescription(),
+                    RemindersModel model = new RemindersModel(clickedEvent.getEventID(), clickedEvent.getEventTitle(), clickedEvent.getDescription(),
                             clickedEvent.getStartDate(), clickedEvent.getEndDate());
                     Intent intent = new Intent(getActivity(), NotificationHandlerActivity.class);
                     intent.putExtra(Constants.NOTIFICATION_DATA_PASS_KEY, model);

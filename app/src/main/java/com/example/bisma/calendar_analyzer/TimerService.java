@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+
+import com.example.bisma.calendar_analyzer.db.source.TasksSource;
 import com.example.bisma.calendar_analyzer.helpers.Constants;
 import com.example.bisma.calendar_analyzer.helpers.UtilHelpers;
 import com.example.bisma.calendar_analyzer.helpers.notifications.NotificationUtils;
+import com.example.bisma.calendar_analyzer.models.EventModelDep;
 import com.example.bisma.calendar_analyzer.models.RemindersModel;
 
 import java.util.Calendar;
@@ -88,6 +91,7 @@ public class TimerService extends IntentService {
                 case MSG_STOP_TIMER:
                     hours = mins = secs = 0;
                     mHandler.removeMessages(MSG_UPDATE_TIMER); // no more updates.
+                    updateTaskSource(2);
                     break;
 
                 default:
@@ -99,5 +103,11 @@ public class TimerService extends IntentService {
     private void showNotification() {
         NotificationUtils.newInstance(this).showGeneralNotification(intentData.getId(), intentData.getTitle(), intentData.getText(),
                 hours, mins, secs);
+    }
+
+    private void updateTaskSource(int status){
+        TasksSource.newInstance().update(new EventModelDep(intentData.getId(), intentData.getTitle(),
+                intentData.getText(), UtilHelpers.getDateInFormat(Calendar.getInstance(), true),
+                UtilHelpers.getDateInFormat(Calendar.getInstance(), true), status));
     }
 }

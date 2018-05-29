@@ -172,6 +172,7 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
                     minTv.setText(String.format("%02d", mins));
                     hourTv.setText(String.format("%02d", hours));
                     mHandler.removeMessages(MSG_UPDATE_TIMER); // no more updates.
+                    updateTaskSource(2);
                     break;
 
                 default:
@@ -184,9 +185,13 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
         Intent serviceIntent = new Intent(this, TimerService.class);
         serviceIntent.putExtra(Constants.SERVICE_DATA_PASS_KEY, intentData);
         startService(serviceIntent);
-        Constants.taskRunning = true;
-        TasksSource.newInstance().insertOrUpdate(new EventModelDep(id, taskTitleTv.getText().toString(),
+        updateTaskSource(1);
+
+    }
+
+    private void updateTaskSource(int status){
+        TasksSource.newInstance().update(new EventModelDep(id, taskTitleTv.getText().toString(),
                 taskDescriptionTv.getText().toString(), UtilHelpers.getDateInFormat(Calendar.getInstance(), true),
-                UtilHelpers.getDateInFormat(Calendar.getInstance(), true), true));
+                UtilHelpers.getDateInFormat(Calendar.getInstance(), true), status));
     }
 }
