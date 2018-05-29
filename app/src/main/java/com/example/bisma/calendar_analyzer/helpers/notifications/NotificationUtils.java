@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.bisma.calendar_analyzer.R;
@@ -37,8 +38,8 @@ public class NotificationUtils {
         return new NotificationUtils(mContext);
     }
 
-    public void showGeneralNotification(int id, String title, String des, int hours, int mins, int secs) {
-        Notification notification = buildNotification(id, title, des, hours, mins, secs).build();
+    public void showGeneralNotification(EventModelDep model, int hours, int mins, int secs) {
+        Notification notification = buildNotification(model, hours, mins, secs).build();
         Uri uri = Uri.parse("android.resource://" + mContext.getPackageName() + "/" + R.raw.notification_tone);
         notification.sound = uri;
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -46,11 +47,9 @@ public class NotificationUtils {
         notificationManager.notify(1, notification);
     }
 
-    protected NotificationCompat.Builder buildNotification(int notificationId, String title, String des, int hours, int mins, int secs) {
+    protected NotificationCompat.Builder buildNotification(EventModelDep model, int hours, int mins, int secs) {
         Intent intent = new Intent(mContext, NotificationHandlerActivity.class);
-        intent.putExtra(Constants.ID_PASS_KEY, notificationId);
-        intent.putExtra(Constants.TITLE_PASS_KEY, title);
-        intent.putExtra(Constants.DESC_PASS_KEY, des);
+        intent.putExtra(Constants.NOTIFICATION_DATA_PASS_KEY, model);
         intent.putExtra(Constants.SEC_PASS_KEY, secs);
         intent.putExtra(Constants.MIN_PASS_KEY, mins);
         intent.putExtra(Constants.HOUR_PASS_KEY, hours);
@@ -73,7 +72,7 @@ public class NotificationUtils {
         // Build a simpler notification, without buttons
         //
         builder = builder.setContentTitle(mContext.getString(R.string.app_name))
-                .setContentText("10 Minutes left for: " + title)
+                .setContentText("10 Minutes left for: " + model.getEventTitle())
                 .setSmallIcon(R.drawable.ic_nav_add_reminder);
         return builder;
     }

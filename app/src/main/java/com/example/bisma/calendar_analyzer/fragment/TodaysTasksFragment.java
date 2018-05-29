@@ -114,10 +114,8 @@ public class TodaysTasksFragment extends Fragment implements View.OnClickListene
         if (!(clickedEvent.getStatus() == 1)) {
             if (clickedEvent.getStatus() == 0) {
                 if (!clickedEvent.getEventTitle().equalsIgnoreCase("")) {
-                    RemindersModel model = new RemindersModel(clickedEvent.getEventID(), clickedEvent.getEventTitle(), clickedEvent.getDescription(),
-                            clickedEvent.getStartDate(), clickedEvent.getEndDate());
                     Intent intent = new Intent(getActivity(), NotificationHandlerActivity.class);
-                    intent.putExtra(Constants.NOTIFICATION_DATA_PASS_KEY, model);
+                    intent.putExtra(Constants.NOTIFICATION_DATA_PASS_KEY, clickedEvent);
                     startActivity(intent);
                 }
             }else {

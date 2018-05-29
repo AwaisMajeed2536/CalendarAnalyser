@@ -25,7 +25,7 @@ public class TimerService extends IntentService {
 
     private final String LOG_TAG = "Notification Service";
     Notification status;
-    RemindersModel intentData = null;
+    EventModelDep intentData = null;
 
     public TimerService() {
         super("TimerService");
@@ -35,7 +35,7 @@ public class TimerService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null) {
             intentData = intent.getParcelableExtra(Constants.SERVICE_DATA_PASS_KEY);
-            getTotalTime(intentData.getStartDateTime(), intentData.getEndDateTime());
+            getTotalTime(intentData.getStartDate(), intentData.getEndDate());
             mHandler.sendEmptyMessage(MSG_START_TIMER);
         }
     }
@@ -101,13 +101,13 @@ public class TimerService extends IntentService {
     };
 
     private void showNotification() {
-        NotificationUtils.newInstance(this).showGeneralNotification(intentData.getId(), intentData.getTitle(), intentData.getText(),
+        NotificationUtils.newInstance(this).showGeneralNotification(intentData,
                 hours, mins, secs);
     }
 
     private void updateTaskSource(int status){
-        TasksSource.newInstance().update(new EventModelDep(intentData.getId(), intentData.getTitle(),
-                intentData.getText(), UtilHelpers.getDateInFormat(Calendar.getInstance(), true),
-                UtilHelpers.getDateInFormat(Calendar.getInstance(), true), status));
+        TasksSource.newInstance().update(new EventModelDep(intentData.getEventID(), intentData.getEventTitle(),
+                intentData.getDescription(), intentData.getStartDate(),
+                intentData.getEndDate(), status));
     }
 }

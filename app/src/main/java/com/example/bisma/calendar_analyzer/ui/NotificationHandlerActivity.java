@@ -35,7 +35,7 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
     protected Button startBtn;
     protected Button pauseBtn;
     protected Button stopBtn;
-    RemindersModel intentData;
+    EventModelDep intentData;
     private int id;
 
     @Override
@@ -88,27 +88,21 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
 
     private void setViewData() {
         intentData = getIntent().getParcelableExtra(Constants.NOTIFICATION_DATA_PASS_KEY);
-        if (intentData != null) {
-            id = intentData.getId();
-            taskTitleTv.setText(intentData.getTitle());
-            taskDescriptionTv.setText(intentData.getText());
-            String totalTime = getTotalTime(intentData.getStartDateTime(), intentData.getEndDateTime());
-            String[] times = totalTime.split(",");
-            hourTv.setText(times[0]);
-            minTv.setText(times[1]);
-            secTv.setText(times[2]);
-        } else {
-            if (getIntent().getStringExtra(Constants.TITLE_PASS_KEY) != null) {
-                Intent intent = getIntent();
-                id = intent.getIntExtra(Constants.ID_PASS_KEY, 0);
-                taskTitleTv.setText(intent.getStringExtra(Constants.TITLE_PASS_KEY));
-                taskDescriptionTv.setText(intent.getStringExtra(Constants.DESC_PASS_KEY));
-                hourTv.setText(String.format("%02d", intent.getIntExtra(Constants.HOUR_PASS_KEY, 0)));
-                minTv.setText(String.format("%02d", intent.getIntExtra(Constants.MIN_PASS_KEY, 0)));
-                secTv.setText(String.format("%02d", intent.getIntExtra(Constants.SEC_PASS_KEY, 0)));
-                mHandler.sendEmptyMessage(MSG_START_TIMER);
-                startBtn.setEnabled(false);
-            }
+        id = intentData.getEventID();
+        taskTitleTv.setText(intentData.getEventTitle());
+        taskDescriptionTv.setText(intentData.getDescription());
+        String totalTime = getTotalTime(intentData.getStartDate(), intentData.getEndDate());
+        String[] times = totalTime.split(",");
+        hourTv.setText(times[0]);
+        minTv.setText(times[1]);
+        secTv.setText(times[2]);
+        if (getIntent().getIntExtra(Constants.HOUR_PASS_KEY, -1) != -1) {
+            Intent intent = getIntent();
+            hourTv.setText(String.format("%02d", intent.getIntExtra(Constants.HOUR_PASS_KEY, 0)));
+            minTv.setText(String.format("%02d", intent.getIntExtra(Constants.MIN_PASS_KEY, 0)));
+            secTv.setText(String.format("%02d", intent.getIntExtra(Constants.SEC_PASS_KEY, 0)));
+            mHandler.sendEmptyMessage(MSG_START_TIMER);
+            startBtn.setEnabled(false);
         }
     }
 
@@ -189,9 +183,9 @@ public class NotificationHandlerActivity extends AppCompatActivity implements Vi
 
     }
 
-    private void updateTaskSource(int status){
-        TasksSource.newInstance().update(new EventModelDep(id, taskTitleTv.getText().toString(),
-                taskDescriptionTv.getText().toString(), UtilHelpers.getDateInFormat(Calendar.getInstance(), true),
-                UtilHelpers.getDateInFormat(Calendar.getInstance(), true), status));
+    private void updateTaskSource(int status) {
+        TasksSource.newInstance().update(new EventModelDep(intentData.getEventID(), intentData.getEventTitle(),
+                intentData.getDescription(), intentData.getStartDate(),
+                intentData.getEndDate(), status));
     }
 }
